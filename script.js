@@ -1,16 +1,28 @@
 function setCurrentTime() {
     let now = new Date();
     let hour = now.getHours();
+    console.log(hour);
     let min = now.getMinutes();
 
-    hour = (hour < 10 ? "0" : "") + hour;
-    min = (min < 10 ? "0" : "") + min;
+    let displayHour = (hour < 10 ? "0" : "") + hour;
+    let displayMin = (min < 10 ? "0" : "") + min;
 
-    const displayHour = document.querySelector("#display-hour");
+    const displayElement = document.querySelector("#display-hour");
     // console.log(displayHour);
-    displayHour.innerText = `${hour}h${min}`;
+    displayElement.innerText = `${displayHour}h${displayMin}`;
+
+    // Vérification si on est entre 18h et 6h du matin
+    // Ici pour un mode automatique :
+    if (hour >= 18 || hour < 6) {
+        // Mode nuit
+        displayElement.style.color = "white";
+        document.body.style.background = "black";
+    } else {
+        // Mode jour
+        displayElement.style.color = "black";
+        document.body.style.background = "white";
+    }
 }
 
 setCurrentTime();
-
-setInterval(setCurrentTime, 1000);
+setInterval(setCurrentTime, 2000);
