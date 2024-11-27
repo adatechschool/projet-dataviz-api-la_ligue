@@ -23,6 +23,8 @@ async function pokemonAPI() {
     displayElement.appendChild(divImage);
 }
 
+// pokemonAPI();
+
 // Afficher les pokémons par le type
 async function displayPokemonsByType(type) {
     const resp = await fetch("https://tyradex.vercel.app/api/v1/gen/1");
@@ -40,6 +42,18 @@ async function displayPokemonsByType(type) {
     // });
 
     return filteredPokemons;
+}
+
+async function displayThreeRandomPokemons(type) {
+
+    const filteredPokemons = await displayPokemonsByType(type);
+    // console.log(filteredPokemons);
+    const shuffledPokemons = shuffle(filteredPokemons);
+    console.log(shuffledPokemons);
+
+    // Récupérer que 3 pokémons
+    // const threeRandomPokemons = shuffledPokemons.slice(0, 3);
+    // console.log(threeRandomPokemons);
 }
 
 // Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
