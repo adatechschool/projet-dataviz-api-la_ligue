@@ -1,16 +1,17 @@
-function setCurrentTime() {
-    let now = new Date();
-    let hour = now.getHours();
-    let min = now.getMinutes();
+const fetchPokemonData = async (userType) => {
+    try {
+        const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
+        const data = await response.json();
 
-    hour = (hour < 10 ? "0" : "") + hour;
-    min = (min < 10 ? "0" : "") + min;
+        for(const pokemon of data) {
+            if (pokemon.types.find((type) => {
+                return type.name.toLowerCase() === userType
+            }))
+            console.log('POKEMON:', pokemon.name.fr)
+        }
 
-    const displayHour = document.querySelector("#display-hour");
-    // console.log(displayHour);
-    displayHour.innerText = `${hour}h${min}`;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données:', error)
+        return []
+    }
 }
-
-setCurrentTime();
-
-setInterval(setCurrentTime, 1000);
