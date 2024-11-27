@@ -23,8 +23,6 @@ async function pokemonAPI() {
     displayElement.appendChild(divImage);
 }
 
-// pokemonAPI();
-
 // Afficher les pokémons par le type
 async function displayPokemonsByType(type) {
     const resp = await fetch("https://tyradex.vercel.app/api/v1/gen/1");
@@ -44,18 +42,6 @@ async function displayPokemonsByType(type) {
     return filteredPokemons;
 }
 
-async function displayThreeRandomPokemons(type) {
-
-    const filteredPokemons = await displayPokemonsByType(type);
-    // console.log(filteredPokemons);
-    const shuffledPokemons = shuffle(filteredPokemons);
-    console.log(shuffledPokemons);
-
-    // Récupérer que 3 pokémons
-    // const threeRandomPokemons = shuffledPokemons.slice(0, 3);
-    // console.log(threeRandomPokemons);
-}
-
 // Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -66,6 +52,28 @@ function shuffle(array) {
     }
 
     return array;
+}
+
+async function displayThreeRandomPokemons(type) {
+
+    const filteredPokemons = await displayPokemonsByType(type);
+    // console.log(filteredPokemons);
+    const shuffledPokemons = shuffle(filteredPokemons);
+    // console.log(shuffledPokemons);
+
+    // Récupérer que 3 pokémons
+    const threeRandomPokemons = shuffledPokemons.slice(0, 3);
+    // console.log(threeRandomPokemons);
+
+    console.log(`3 Pokémons de type ${type} :`);
+    for (const pokemon of threeRandomPokemons) {
+        console.log(`${pokemon.name.fr}`);
+
+        const paraph = document.createElement('p');
+        paraph.innerText = `${pokemon.name.fr}`;
+        const displayElement = document.querySelector("#display-hour");
+        displayElement.appendChild(paraph);
+    }
 }
 
 let choiceType = "Eau"
