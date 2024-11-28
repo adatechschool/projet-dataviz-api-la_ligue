@@ -2,7 +2,7 @@
 const displayElement = document.querySelector("#display-hour");
 // console.log(displayHour);
 
-// Ici on affiche l'heure du navigateur 
+// Ici on affiche l'heure du navigateur
 function setCurrentTime() {
     let now = new Date();
     let hour = now.getHours();
@@ -56,7 +56,7 @@ const fetchAllTypes = async () => {
     try {
         const response = await fetch('https://tyradex.vercel.app/api/v1/types');
         const data = await response.json();
-  
+
         return data.map(type => type.name.fr);
     } catch (error) {
         console.error('Erreur lors de la récupération des types:', error);
@@ -99,7 +99,7 @@ function shuffle(array) {
     return array;
 }
 
-// Afficher les pokemons dans le DOM 
+// Afficher les pokemons dans le DOM
 const displayRandomPkmn = async (type) => {
     const allPokemons = await fetchPokemonByType(type);
     const randomPokemons = shuffle(allPokemons);
