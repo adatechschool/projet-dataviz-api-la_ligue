@@ -61,8 +61,6 @@ const fetchPokemonByType = async (pkmnType) => {
     };
 };
 
-fetchPokemonByType('plante');
-
 // Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -88,4 +86,27 @@ const displayRandomPkmn = async (type) => {
 
     //return randomPokemons
 }
-displayRandomPkmn('feu')
+/*
+const handleClick = async () => {
+    const pokemons = await displayRandomPkmn('feu');
+
+    if(pokemons){
+        displayDescription()
+    }
+}
+handleClick()
+*/
+
+const displayDescription = async () => {
+   const pokemons = await displayRandomPkmn('feu')
+   
+   const h3 = document.createElement('h3')
+   h3.innerHTML = pokemons
+   document.querySelector('body').appendChild(h3)
+
+
+}
+
+displayDescription()
+
+ 
