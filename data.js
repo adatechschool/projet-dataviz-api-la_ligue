@@ -63,7 +63,7 @@ async function displayThreeRandomPokemons(type) {
 
     // Récupérer que 3 pokémons
     const threeRandomPokemons = shuffledPokemons.slice(0, 3);
-    // console.log(threeRandomPokemons);
+    console.log(threeRandomPokemons);
 
     console.log(`3 Pokémons de type ${type} :`);
     for (const pokemon of threeRandomPokemons) {
@@ -79,17 +79,3 @@ async function displayThreeRandomPokemons(type) {
 let choiceType = "Eau"
 // displayPokemonsByType(choiceType);
 displayThreeRandomPokemons(choiceType)
-
-// NOTES POUR MOI :
-// for (const pokemon of data.pokemons) {
-//      if (pokemon.type === "feu") {
-//     console.log(pokemon.name, pokemon.type);
-//     }
-// }
-
-// types.find((type) => {
-//     return type.name === "Feu";
-// })
-
-// Faire un map pour avoir que les champs dont on a besoin
-// pas besoin de retourner, la fonction elle modifie directement le tabelau, elle ne fait de nouveau tableau => Elle fait une mutation sur le tableau

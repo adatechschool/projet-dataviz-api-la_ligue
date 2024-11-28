@@ -1,0 +1,86 @@
+#menu {
+    background-color: pink;
+
+}
+
+body {
+    /*background-color: #0F0425;*/
+    min-height: 100vh;
+}
+
+#menu {
+    /* Taille */
+    min-height: 10vh;
+
+    /* Positionnement */
+    display: flex;
+    justify-content: space-between;
+}
+
+#menu-side-left {
+    background-color: greenyellow;
+
+    /* Positionnement */
+    display: flex;
+}
+
+#display-hour {
+    /*background-color: green;*/
+
+    /* Taille */
+    min-width: 10vw;
+
+    /* Positionnement */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#logo {
+    background-color: yellow;
+    min-width: 10vw;
+}
+
+#logo-title {
+    background-color: cadetblue;
+    min-width: 10vw;
+}
+
+#search-bar {
+    background-color: blueviolet;
+
+    /* Taille */
+    min-width: 30vw;
+}
+
+#astro-container {
+    /* Taille */
+    min-height: 100vh;
+    padding: 5em 10em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.arc-astro {
+    min-width: 30vw;
+    min-height: 10vh;
+
+    padding: 2em;
+}
+
+#arc-astro-type {
+    background-color: pink;
+}
+
+#form-astro {
+    /*background-color: blue;*/
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#arc-astro-description {
+    background-color: navajowhite;
+}

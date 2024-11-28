@@ -1,5 +1,6 @@
 // Intéraction avec le DOM
 const displayElement = document.querySelector("#display-hour");
+const astroContainer = document.querySelector("#astro-container");
 // console.log(displayHour);
 
 // Ici on affiche l'heure du navigateur
@@ -26,11 +27,11 @@ const darkMode = (navHour) => {
     if (navHour >= 18 || navHour < 6) {
         // Mode nuit
         displayElement.style.color = "white";
-        document.body.style.background = "black";
+        astroContainer.style.background = "#0F0425";
     } else {
         // Mode jour
         displayElement.style.color = "black";
-        document.body.style.background = "white";
+        astroContainer.style.background = "#74469C";
     };
 };
 
@@ -108,7 +109,7 @@ const displayRandomPkmn = async (type) => {
     // Interaction dans le DOM
     let p = document.createElement('p');
     p.innerText = threeRandomPokemons;
-    document.querySelector('body').appendChild(p)
+    document.querySelector('#arc-astro-type').appendChild(p)
 
     //return randomPokemons
 }
