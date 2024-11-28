@@ -80,33 +80,28 @@ const displayRandomPkmn = async (type) => {
     const threeRandomPokemons = randomPokemons.slice(0, 3)
 
     // Interaction dans le DOM
+    /*
     let p = document.createElement('p');
     p.innerText = threeRandomPokemons;
-    document.querySelector('body').appendChild(p)
+    document.querySelector('body').appendChild(p);
+    */
 
-    //return randomPokemons
-}
-/*
-const handleClick = async () => {
-    const pokemons = await displayRandomPkmn('feu');
+    threeRandomPokemons.forEach(pokemon => {
+        let div = document.createElement('div');
+        div.classList.add('pokemon');
+        div.innerText = pokemon
+        document.querySelector('body').appendChild(div);
+    });
 
-    if(pokemons){
-        displayDescription()
-    }
-}
-handleClick()
-*/
+    // Récupérer les élèments
+    const pokemonElements = document.querySelectorAll('.pokemon');
 
-const displayDescription = async () => {
-   const pokemons = await displayRandomPkmn('feu')
-   
-   const h3 = document.createElement('h3')
-   h3.innerHTML = pokemons
-   document.querySelector('body').appendChild(h3)
+    // Cliquer sur les pokemons
+    pokemonElements.forEach(pokemon => {
+        pokemon.addEventListener('click', (e) => {
+            console.log('click', e.target.innerText)
+        })
+    })
+};
 
-
-}
-
-displayDescription()
-
- 
+displayRandomPkmn('feu')
