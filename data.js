@@ -1,3 +1,4 @@
+/** 
 const fetchPokemonData = async (pkmnType) => {
     try {
         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
@@ -40,3 +41,4 @@ const displayRandomPkmn = async (type) => {
     //return randomPokemons
 }
 displayRandomPkmn('feu')
+**/
