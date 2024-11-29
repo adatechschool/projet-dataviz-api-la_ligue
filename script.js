@@ -21,7 +21,7 @@ function setCurrentTime() {
 // Gestion du dark mode
 const darkMode = (navHour) => {
 
-     // Vérification si on est entre 18h et 6h du matin
+    // Vérification si on est entre 18h et 6h du matin
     // Ici pour un mode automatique :
     if (navHour >= 18 || navHour < 6) {
         // Mode nuit
@@ -46,14 +46,15 @@ const fetchPokemonByType = async (pkmnType) => {
         const matchingPokemons = [];
 
         for(const pokemon of data) {
-            if (pokemon.types.find((type) => {
-                return type.name.toLowerCase() === pkmnType // toLowerCase a virer lorsque la liste déroulante sera intégrer.
-            }))
-            matchingPokemons.push(pokemon.name.fr)
-            //console.log('POKEMON:', pokemon.name.fr)
-        };
-
-        return matchingPokemons;
+            if (pokemon.types.find((type) => type.name.toLowerCase() === pkmnType)){// toLowerCase a virer lorsque la liste déroulante sera intégrer.
+            matchingPokemons.push({
+                name: pokemon.name.fr,
+                types: pokemon.types.map(type => type.name),
+                photo: pokemon.sprites.regular
+            })
+        }
+    };
+    return matchingPokemons;
 
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error)
@@ -89,7 +90,8 @@ const displayRandomPkmn = async (type) => {
     threeRandomPokemons.forEach(pokemon => {
         let div = document.createElement('div');
         div.classList.add('pokemon');
-        div.innerText = pokemon
+        div.innerText = pokemon.name;
+        div.pokemonData = pokemon;
         document.querySelector('body').appendChild(div);
     });
 
@@ -99,9 +101,22 @@ const displayRandomPkmn = async (type) => {
     // Cliquer sur les pokemons
     pokemonElements.forEach(pokemon => {
         pokemon.addEventListener('click', (e) => {
-            console.log('click', e.target.innerText)
-        })
+        const target = e.target;
+        const pokemonData = target.pokemonData
+        pokemon.style.display = 'none';
+        let div = document.createElement('div');
+            div.classList.add('description')
+            div.innerHTML = `
+                <h2>${pokemonData.name}</h2>
+                <p>Types: ${pokemonData.types.join(', ')}</p>
+                <img src="${pokemonData.photo}" alt="${pokemonData.name}">
+                `
+            document.querySelector('body').appendChild(div)
+    })
+    
     })
 };
 
-displayRandomPkmn('feu')
+displayRandomPkmn('feu');
+
+
