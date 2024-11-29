@@ -102,8 +102,10 @@ const displayRandomPkmn = async (type) => {
     pokemonElements.forEach(pokemon => {
         pokemon.addEventListener('click', (e) => {
         const target = e.target;
-        const pokemonData = target.pokemonData
-        pokemon.style.display = 'none';
+        const pokemonData = target.pokemonData // Récuperer les infos des pokemons
+        // Masquer les pokemons
+        pokemonElements.forEach(p => p.style.display = 'none');
+        // Créer et afficher les détails du Pokemon cliqué
         let div = document.createElement('div');
             div.classList.add('description')
             div.innerHTML = `
