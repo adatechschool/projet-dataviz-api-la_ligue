@@ -93,11 +93,12 @@ const fetchPokemonByType = async (pkmnType) => {
 
         const matchingPokemons = [];
 
-        for(const pokemon of data) {
+        for (const pokemon of data) {
             if (pokemon.types.find((type) => {
-                return type.name.toLowerCase() === pkmnType // toLowerCase a virer lorsque la liste déroulante sera intégrer.
+                return type.name.toLowerCase() === pkmnType
+                // toLowerCase a virer lorsque la liste déroulante sera intégrer.
             }))
-            matchingPokemons.push(pokemon.name.fr)
+                matchingPokemons.push(pokemon.name.fr)
             //console.log('POKEMON:', pokemon.name.fr)
         }
 
