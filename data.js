@@ -79,3 +79,27 @@ async function displayThreeRandomPokemons(type) {
 let choiceType = "Eau"
 // displayPokemonsByType(choiceType);
 displayThreeRandomPokemons(choiceType)
+
+// Gestion du darkmode
+// Sélection des éléments
+const toggleButton = document.getElementById("dark-mode-toggle");
+const body = document.body;
+const sunIcon = document.getElementById("sun");
+const moonIcon = document.getElementById("moon");
+
+// Fonction pour basculer le mode
+function toggleDarkMode() {
+    const isDark = body.classList.toggle("dark"); // Ajoute/enlève la classe "dark"
+
+    // Affichage des icônes
+    if (isDark) {
+        sunIcon.classList.add("hidden");
+        moonIcon.classList.remove("hidden");
+    } else {
+        moonIcon.classList.add("hidden");
+        sunIcon.classList.remove("hidden");
+    }
+}
+
+// Écouteur d'événement
+toggleButton.addEventListener("click", toggleDarkMode);
