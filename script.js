@@ -121,7 +121,7 @@ function shuffle(array) {
 }
 
 // Afficher les pokemons dans le DOM
-const displayRandomPkmn = async (type) => {
+const displayRandomPokemons = async (type) => {
     const allPokemons = await fetchPokemonByType(type);
     const randomPokemons = shuffle(allPokemons);
     const threeRandomPokemons = randomPokemons.slice(0, 3)
@@ -134,4 +134,4 @@ const displayRandomPkmn = async (type) => {
     //return randomPokemons
 }
 
-displayRandomPkmn("Feu");
+displayRandomPokemons("Feu");
