@@ -1,3 +1,6 @@
+import { pokemonAstrologyThemes } from "./theme.js";
+
+/*
 // Intéraction avec le DOM
 const displayElement = document.querySelector("#display-hour");
 // console.log(displayHour);
@@ -34,9 +37,10 @@ const darkMode = (navHour) => {
     };
 };
 
+
 setCurrentTime();
 setInterval(setCurrentTime, 2000);
-
+*/
 
 const fetchPokemonByType = async (pkmnType) => {
     try {
@@ -76,47 +80,68 @@ function shuffle(array) {
 
 // Afficher les pokemons dans le DOM 
 const displayRandomPkmn = async (type) => {
-    const allPokemons = await fetchPokemonByType(type);
-    const randomPokemons = shuffle(allPokemons);
-    const threeRandomPokemons = randomPokemons.slice(0, 3)
+    try {
+        const allPokemons = await fetchPokemonByType(type);
+        const randomPokemons = shuffle(allPokemons);
+        const threeRandomPokemons = randomPokemons.slice(0, 3)
 
-    // Interaction dans le DOM
-    /*
-    let p = document.createElement('p');
-    p.innerText = threeRandomPokemons;
-    document.querySelector('body').appendChild(p);
-    */
+        // Interaction dans le DOM
+        /*
+        let p = document.createElement('p');
+        p.innerText = threeRandomPokemons;
+        document.querySelector('body').appendChild(p);
+        */
 
-    threeRandomPokemons.forEach(pokemon => {
-        let div = document.createElement('div');
-        div.classList.add('pokemon');
-        div.innerText = pokemon.name;
-        div.pokemonData = pokemon;
-        document.querySelector('body').appendChild(div);
-    });
+        threeRandomPokemons.forEach(pokemon => {
+            let div = document.createElement('div');
+            div.classList.add('pokemon');
+            div.innerText = pokemon.name;
+            div.pokemonData = pokemon;
+            document.querySelector('body').appendChild(div);
+        });
 
-    // Récupérer les élèments
-    const pokemonElements = document.querySelectorAll('.pokemon');
+        // Récupérer les élèments
+        const pokemonElements = document.querySelectorAll('.pokemon');
 
-    // Cliquer sur les pokemons
-    pokemonElements.forEach(pokemon => {
-        pokemon.addEventListener('click', (e) => {
-        const target = e.target;
-        const pokemonData = target.pokemonData // Récuperer les infos des pokemons
-        // Masquer les pokemons
-        pokemonElements.forEach(p => p.style.display = 'none');
-        // Créer et afficher les détails du Pokemon cliqué
-        let div = document.createElement('div');
-            div.classList.add('description')
-            div.innerHTML = `
-                <h2>${pokemonData.name}</h2>
-                <p>Types: ${pokemonData.types.join(', ')}</p>
-                <img src="${pokemonData.photo}" alt="${pokemonData.name}">
+        // Récupérer les thèmes
+        const themeAstro = pokemonAstrologyThemes;
+
+        // Cliquer sur les pokemons
+        pokemonElements.forEach(pokemon => {
+            pokemon.addEventListener('click', (e) => {
+            const target = e.target;
+            const pokemonData = target.pokemonData // Récuperer les infos des pokemons 
+
+            // Masquer les pokemons
+            pokemonElements.forEach(p => p.style.display = 'none');
+
+            // Correspondre les pokémons avec les thèmes 
+            let themeDescription = "";
+            pokemonData.types.forEach(type => {
+                if(themeAstro[type]){
+                    const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
+                    console.log(randomTheme)
+                    themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`
+                } 
+            })
+            
+            // Créer et afficher les détails du Pokemon cliqué
+            let div = document.createElement('div');
+                div.classList.add('description')
+                div.innerHTML = `
+                    <h2>${pokemonData.name}</h2>
+                    <p>Types: ${pokemonData.types.join(', ')}</p>
+                    <img src="${pokemonData.photo}" alt="${pokemonData.name}">
+                    <p><strong>Description</strong>: ${themeDescription}</p>
                 `
             document.querySelector('body').appendChild(div)
+
+        })
+        
     })
-    
-    })
+} catch(error){
+    console.error('Erreur lors de la récupération des données:', error);
+}
 };
 
 displayRandomPkmn('feu');
