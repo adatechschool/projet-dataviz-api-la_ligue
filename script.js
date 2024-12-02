@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        console.log("Populating the dropdown with types...");
         dropdown.innerHTML = '';
 
         try {
@@ -110,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 option.textContent = type;
                 dropdown.appendChild(option);
             });
-            console.log("Dropdown populated successfully with types.");
         } catch (error) {
             console.error("Erreur lors du remplissage de la liste déroulante :", error);
 
@@ -121,19 +119,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    typesDropDown();
-
-    const dropdown = document.getElementById("options");
-    if (dropdown) {
+    typesDropDown().then(() => {
         dropdown.addEventListener("change", (event) => {
             console.log(`Dropdown changed to: ${event.target.value}`);
             if (event.target.value) {
                 displayRandomPkmn(event.target.value);
             }
         });
-    } else {
-        console.error("Dropdown element not found in the DOM.");
-    }
+    });    
 
     const fetchPokemonByType = async (pkmnType) => {
         try {
@@ -232,3 +225,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
+
