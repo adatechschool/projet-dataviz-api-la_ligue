@@ -3,9 +3,9 @@ import { pokemonAstrologyThemes } from "./theme.js";
 /*
 // Intéraction avec le DOM
 const displayElement = document.querySelector("#display-hour");
-// console.log(displayHour);
+const themeSwitch = document.querySelector('.theme-switch');
 
-// Ici on affiche l'heure du navigateur 
+// --- Ici on affiche l'heure du navigateur ---
 function setCurrentTime() {
     let now = new Date();
     let hour = now.getHours();
@@ -17,30 +17,79 @@ function setCurrentTime() {
 
     displayElement.innerText = `${displayHour}h${displayMin}`;
 
-    darkMode(hour);
+    // Appelle le darkmode
+    darkmodeTime(hour);
+}
 
-};
+// --- Gestion du dark mode ---
 
-// Gestion du dark mode
-const darkMode = (navHour) => {
+// Variables globales pour gérer l'état du thème
+let isAutoDarkMode = true;  // Pour suivre si le mode auto est actif. Au démarage c'est actif.
+let isDarkModeTime = false; // Pour suivre si c'est l'heure du mode sombre
 
-    // Vérification si on est entre 18h et 6h du matin
-    // Ici pour un mode automatique :
+
+// Darkmode selon l'heure
+const darkmodeTime = (navHour) => {
+   
     if (navHour >= 18 || navHour < 6) {
         // Mode nuit
-        displayElement.style.color = "white";
-        document.body.style.background = "black";
+        // Mise à jour de l'état du mode sombre selon l'heure
+        isDarkModeTime = true;
     } else {
         // Mode jour
-        displayElement.style.color = "black";
-        document.body.style.background = "white";
-    };
-};
+        isDarkModeTime = false;
+    }
+
+    // Applique le thème automatique seulement si le mode auto est actif
+    if (isAutoDarkMode === true) {
+        applyTheme(isDarkModeTime);
+    }
+}
+
+// Fonction pour appliquer le thème
+function applyTheme(themeStatus) {
+    // console.log(themeStatus);
+
+    if (themeStatus) { // Si themeStatus = true (= light) => on passe en darkmode
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+}
+
+// Bouton darkmode
+themeSwitch.addEventListener('click', () => {
+    // Désactive le mode automatique quand on utilise le bouton
+    isAutoDarkMode = false;
+
+    // Inverse le thème actuel
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+
+    if (currentTheme === 'dark') {
+        applyTheme(false); // false = dark
+    } else {
+        applyTheme(true); // true = light
+    }
+});
 
 
 setCurrentTime();
 setInterval(setCurrentTime, 2000);
 */
+
+// récupérer les types
+const fetchAllTypes = async () => {
+    try {
+        const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+        const data = await response.json();
+
+        // Retourner seulement les noms en français
+        return data.map(type => type.name.fr);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des types:', error);
+        return [];
+    }
+};
 
 const fetchPokemonByType = async (pkmnType) => {
     try {
@@ -145,5 +194,3 @@ const displayRandomPkmn = async (type) => {
 };
 
 displayRandomPkmn('feu');
-
-

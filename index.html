@@ -10,17 +10,43 @@
     <title>Pokemonologie</title>
 </head>
 <body>
-    <div id="display-hour"></div>
-    <form>
-        <label for="options">Options :</label>
-        <select id="options" name="options">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-            <option value="option4">Option 4</option>
-        </select>
-        <br><br>
-        <button type="submit">Valider</button>
-    </form>
+    <div id="menu">
+        <div id="menu-side-left">
+            <div id="display-hour"></div>
+            <div id="logo"></div>
+            <img src="" id="logo-title">
+        </div>
+
+        <div id="menu-side-right">
+            <div id="search-bar"></div>
+            <button class="theme-switch" aria-label="Changer le thème">
+                <div class="switch-handle">
+                    <div class="sun"></div>
+                    <div class="moon"></div>
+                </div>
+                <div class="star"></div>
+            </button>
+        </div>
+    </div>
+
+    <div id="astro-container">
+        <div class="arc-astro" id="arc-astro-type">
+            <form id="form-astro">
+                <label for="options">Options :</label>
+                <select id="options" name="options">
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                    <option value="option4">Option 4</option>
+                </select>
+                <br><br>
+                <button type="submit">Valider</button>
+            </form>
+        </div>
+
+        <div class="arc-astro" id="arc-astro-description">
+
+        </div>
+    </div>
 </body>
 </html>
