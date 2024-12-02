@@ -30,6 +30,8 @@ body {
 
     /* Positionnement */
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #display-hour {
@@ -44,20 +46,21 @@ body {
     align-items: center;
 }
 
-#logo {
+#logo-title {
     /*background-color: yellow;*/
     /*border: solid yellow;*/
 
     /* Taille */
     min-width: 10vw;
+    min-height: 3vh;
+    max-height: 8vh;
+
+    /* Transition */
+    transition: opacity 0.5s ease-in-out;
 }
 
-#logo-title {
-    /*background-color: cadetblue;*/
-    /*border: solid cadetblue;*/
-
-    /* Taille */
-    min-width: 10vw;
+.fade {
+    opacity: 0;
 }
 
 /* Containeur à droite du Menu*/

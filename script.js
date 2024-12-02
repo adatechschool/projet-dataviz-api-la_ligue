@@ -3,6 +3,7 @@ import { pokemonAstrologyThemes } from "./theme.js";
 // Intéraction avec le DOM
 const displayElement = document.querySelector("#display-hour");
 const themeSwitch = document.querySelector('.theme-switch');
+const imgLogo = document.querySelector('#logo-title');
 
 // --- Ici on affiche l'heure du navigateur ---
 function setCurrentTime() {
@@ -25,7 +26,6 @@ function setCurrentTime() {
 // Variables globales pour gérer l'état du thème
 let isAutoDarkMode = true;  // Pour suivre si le mode auto est actif. Au démarage c'est actif.
 let isDarkModeTime = false; // Pour suivre si c'est l'heure du mode sombre
-
 
 // Darkmode selon l'heure
 const darkmodeTime = (navHour) => {
@@ -70,8 +70,29 @@ themeSwitch.addEventListener('click', () => {
     }
 });
 
+// Ici on change le logo dans le menu
+const changeLogo = () => {
+    const image1 = "images/logo-01.svg";
+    const image2 = "images/logo-02.svg";
+
+    imgLogo.classList.add('fade');
+
+    setTimeout(() => {
+        // Change l'image quand elle est invisible
+        if (imgLogo.src.includes(image1)) {
+            imgLogo.src = image2;
+        } else {
+            imgLogo.src = image1;
+        }
+
+        // Retire l'effet de fondu
+        imgLogo.classList.remove('fade');
+    }, 500);
+}
+
 setCurrentTime();
 setInterval(setCurrentTime, 2000);
+setInterval(changeLogo, 3000);
 
 // récupérer les types
 const fetchAllTypes = async () => {
@@ -131,62 +152,69 @@ const displayRandomPokemons = async (type) => {
         const randomPokemons = shuffle(allPokemons);
         const threeRandomPokemons = randomPokemons.slice(0, 3)
 
-        // Interaction dans le DOM
-        /*
-        let p = document.createElement('p');
-        p.innerText = threeRandomPokemons;
-        document.querySelector('body').appendChild(p);
-        */
-
         threeRandomPokemons.forEach(pokemon => {
             let detailsPokemon = document.createElement('div');
+
             detailsPokemon.classList.add('pokemon');
             detailsPokemon.innerText = pokemon.name;
             detailsPokemon.pokemonData = pokemon;
+
             document.querySelector('#arc-astro-type').appendChild(detailsPokemon);
             });
 
             // Récupérer les élèments
             const pokemonElements = document.querySelectorAll('.pokemon');
 
-            // Récupérer les thèmes
-            const themeAstro = pokemonAstrologyThemes;
-
             // Cliquer sur les pokemons
             pokemonElements.forEach(pokemon => {
                 pokemon.addEventListener('click', (e) => {
-                const target = e.target;
-                const pokemonData = target.pokemonData // Récuperer les infos des pokemons
+                    const target = e.target;
+                    const pokemonData = target.pokemonData // Récuperer les infos des pokemons
 
-                // Masquer les pokemons
-                pokemonElements.forEach(p => p.style.display = 'none');
+                    // Masquer les pokemons
+                    pokemonElements.forEach(p => p.style.display = 'none');
 
-                // Correspondre les pokémons avec les thèmes
-                let themeDescription = "";
-                pokemonData.types.forEach(type => {
-                    if(themeAstro[type]){
-                        const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
-                        console.log(randomTheme)
-                        themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`
-                    }
+                    const astralDescription = astralChartCorrespondence(pokemonData);
+
+                    displayDetailsOfOnePokémon(pokemonData, astralDescription);
                 })
-
-                // Créer et afficher les détails du Pokemon cliqué
-                let descriptionPokemon = document.createElement('div');
-                    descriptionPokemon.classList.add('description')
-                    descriptionPokemon.innerHTML = `
-                        <h2>${pokemonData.name}</h2>
-                        <p>Types: ${pokemonData.types.join(', ')}</p>
-                        <img src="${pokemonData.photo}" alt="${pokemonData.name}">
-                        <p><strong>Description</strong>: ${themeDescription}</p>
-                    `
-                document.querySelector('#arc-astro-description').appendChild(descriptionPokemon);
-
             })
-        })
     } catch(error) {
         console.error('Erreur lors de la récupération des données:', error);
     }
 };
+
+// Gère la correspondance avec le thème astral
+const astralChartCorrespondence = (data) => {
+    // Récupérer les thèmes
+    const themeAstro = pokemonAstrologyThemes;
+
+    let themeDescription = "";
+
+    data.types.forEach(type => {
+        if(themeAstro[type]){
+            const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
+            // console.log(randomTheme);
+            themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`;
+        }
+    })
+
+    return themeDescription;
+}
+
+// Gère l'affichage des détails du pokémon choisi
+const displayDetailsOfOnePokémon = (data, description) => {
+    let descriptionPokemon = document.createElement('div');
+
+    descriptionPokemon.classList.add('description');
+    descriptionPokemon.innerHTML = `
+        <h2>${data.name}</h2>
+        <p>Types: ${data.types.join(', ')}</p>
+        <img src="${data.photo}" alt="${data.name}">
+        <p><strong>Description</strong>: ${description}</p>
+    `;
+
+    document.querySelector('#arc-astro-description').appendChild(descriptionPokemon)
+}
 
 displayRandomPokemons ('feu');
