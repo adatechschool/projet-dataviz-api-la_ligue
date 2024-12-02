@@ -89,3 +89,16 @@ const displayRandomPkmn = async (type) => {
     //return randomPokemons
 }
 displayRandomPkmn('feu')
+function PokemonImage() {
+    const apiUrl = 'https://pokeapi.co/api/v2/pokemon/59/';
+    then(response => response.json())
+    .then(data => const randomIndex = Math.floor(Math.random() * data.results.length);
+    const randomPokemon = data.results[randomIndex];
+    fetch(randomPokemon.url)
+    .then(response => response.json())
+    .then(data => { 
+        const image = document.getElementById('pokemon-image');
+          image.src = data.sprites.front_default;
+    };
+    ))};
+    window.onload = getPokemonImage;
