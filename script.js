@@ -37,6 +37,32 @@ const darkMode = (navHour) => {
 setCurrentTime();
 setInterval(setCurrentTime, 2000);
 
+// récupérer les types
+const fetchAllTypes = async () => {
+    try {
+        const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+        const data = await response.json();
+
+        // Retourner seulement les noms en français
+        return data.map(type => type.name.fr);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des types:', error);
+        return [];
+    }
+};
+
+// récupérer les types de pokemon
+const fetchAllTypes = async () => {
+    try {
+        const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+        const data = await response.json();
+  
+        return data.map(type => type.name.fr);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des types:', error);
+        return [];
+    }
+  };
 
 const fetchPokemonByType = async (pkmnType) => {
     try {
@@ -60,8 +86,6 @@ const fetchPokemonByType = async (pkmnType) => {
         return []
     };
 };
-
-fetchPokemonByType('plante');
 
 // Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
 function shuffle(array) {
