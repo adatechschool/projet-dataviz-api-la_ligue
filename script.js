@@ -190,3 +190,41 @@ const displayRandomPokemons = async (type) => {
 };
 
 displayRandomPokemons ('feu');
+
+// searchbar
+const searchTerm = document.getElementById('search');
+
+// Rechercher des pokemons dans la searchbar
+document.getElementById('searchButton').addEventListener('click', () =>{
+    const input = searchTerm.value.toLowerCase();
+    console.log('input:', input)
+    searchPokemon(input)
+})
+
+// Recuperer tous les pokemons 
+const searchPokemon = async (input) => {
+    try {
+        const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1');
+        const data = await response.json();
+
+        // Filtrer les pokemons 
+        const filteredPokemons = data.filter(pokemon => pokemon.name.fr.toLowerCase().includes(input));
+        displaySearchResults(filteredPokemons)
+    } catch(error){
+        console.error('Erreur lors de la recupération des données', error)
+    }
+};
+searchPokemon()
+
+
+const displaySearchResults = pokemons => {
+    const resultsContainer = document.querySelector('.pokemonResults');
+    resultsContainer.innerHTML = '';
+
+    pokemons.forEach(pokemon => {
+        let div = document.createElement('div');
+        div.classList.add('pokemon');
+        div.innerHTML = `<h2>${pokemon.name.fr}</h2>`;
+        resultsContainer.appendChild(div)
+    })
+}
