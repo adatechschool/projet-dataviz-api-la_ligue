@@ -1,12 +1,11 @@
 body {
-    background: linear-gradient(var(--background-gradient-top), 75%, var(--background-gradient-bottom));
     margin: 0;
     width: 100vw;
     height: 100vh;
 
     /* Police */
     color: var(--text-color);
-    font-family: Georgia, serif;
+    font-family: Roboto;
 
     transition: background 0.3s ease; /* Animation douce lors du changement */
 }
@@ -199,6 +198,8 @@ body {
 }
 
 #astro-container {
+    background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));
+
     /* Taille */
     min-height: 70vh;
     padding: 5em 10em;
@@ -241,6 +242,6 @@ body {
 }
 
 /* Ajout de transitions pour une animation douce */
-#menu, .arc-astro, #search-bar {
+#menu, body, #search-bar {
     transition: all 0.3s ease;
 }

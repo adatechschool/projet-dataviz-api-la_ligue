@@ -1,6 +1,5 @@
 import { pokemonAstrologyThemes } from "./theme.js";
 
-/*
 // Intéraction avec le DOM
 const displayElement = document.querySelector("#display-hour");
 const themeSwitch = document.querySelector('.theme-switch');
@@ -30,7 +29,6 @@ let isDarkModeTime = false; // Pour suivre si c'est l'heure du mode sombre
 
 // Darkmode selon l'heure
 const darkmodeTime = (navHour) => {
-   
     if (navHour >= 18 || navHour < 6) {
         // Mode nuit
         // Mise à jour de l'état du mode sombre selon l'heure
@@ -72,10 +70,8 @@ themeSwitch.addEventListener('click', () => {
     }
 });
 
-
 setCurrentTime();
 setInterval(setCurrentTime, 2000);
-*/
 
 // récupérer les types
 const fetchAllTypes = async () => {
@@ -89,7 +85,7 @@ const fetchAllTypes = async () => {
         console.error('Erreur lors de la récupération des types:', error);
         return [];
     }
-};
+}
 
 const fetchPokemonByType = async (pkmnType) => {
     try {
@@ -106,14 +102,15 @@ const fetchPokemonByType = async (pkmnType) => {
                 photo: pokemon.sprites.regular
             })
         }
-    };
+    }
+
     return matchingPokemons;
 
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error)
         return []
-    };
-};
+    }
+}
 
 // Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
 function shuffle(array) {
@@ -127,8 +124,8 @@ function shuffle(array) {
     return array;
 }
 
-// Afficher les pokemons dans le DOM 
-const displayRandomPkmn = async (type) => {
+// Afficher les pokemons dans le DOM
+const displayRandomPokemons = async (type) => {
     try {
         const allPokemons = await fetchPokemonByType(type);
         const randomPokemons = shuffle(allPokemons);
@@ -142,55 +139,54 @@ const displayRandomPkmn = async (type) => {
         */
 
         threeRandomPokemons.forEach(pokemon => {
-            let div = document.createElement('div');
-            div.classList.add('pokemon');
-            div.innerText = pokemon.name;
-            div.pokemonData = pokemon;
-            document.querySelector('body').appendChild(div);
-        });
+            let detailsPokemon = document.createElement('div');
+            detailsPokemon.classList.add('pokemon');
+            detailsPokemon.innerText = pokemon.name;
+            detailsPokemon.pokemonData = pokemon;
+            document.querySelector('#arc-astro-type').appendChild(detailsPokemon);
+            });
 
-        // Récupérer les élèments
-        const pokemonElements = document.querySelectorAll('.pokemon');
+            // Récupérer les élèments
+            const pokemonElements = document.querySelectorAll('.pokemon');
 
-        // Récupérer les thèmes
-        const themeAstro = pokemonAstrologyThemes;
+            // Récupérer les thèmes
+            const themeAstro = pokemonAstrologyThemes;
 
-        // Cliquer sur les pokemons
-        pokemonElements.forEach(pokemon => {
-            pokemon.addEventListener('click', (e) => {
-            const target = e.target;
-            const pokemonData = target.pokemonData // Récuperer les infos des pokemons 
+            // Cliquer sur les pokemons
+            pokemonElements.forEach(pokemon => {
+                pokemon.addEventListener('click', (e) => {
+                const target = e.target;
+                const pokemonData = target.pokemonData // Récuperer les infos des pokemons
 
-            // Masquer les pokemons
-            pokemonElements.forEach(p => p.style.display = 'none');
+                // Masquer les pokemons
+                pokemonElements.forEach(p => p.style.display = 'none');
 
-            // Correspondre les pokémons avec les thèmes 
-            let themeDescription = "";
-            pokemonData.types.forEach(type => {
-                if(themeAstro[type]){
-                    const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
-                    console.log(randomTheme)
-                    themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`
-                } 
+                // Correspondre les pokémons avec les thèmes
+                let themeDescription = "";
+                pokemonData.types.forEach(type => {
+                    if(themeAstro[type]){
+                        const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
+                        console.log(randomTheme)
+                        themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`
+                    }
+                })
+
+                // Créer et afficher les détails du Pokemon cliqué
+                let descriptionPokemon = document.createElement('div');
+                    descriptionPokemon.classList.add('description')
+                    descriptionPokemon.innerHTML = `
+                        <h2>${pokemonData.name}</h2>
+                        <p>Types: ${pokemonData.types.join(', ')}</p>
+                        <img src="${pokemonData.photo}" alt="${pokemonData.name}">
+                        <p><strong>Description</strong>: ${themeDescription}</p>
+                    `
+                document.querySelector('#arc-astro-description').appendChild(descriptionPokemon);
+
             })
-            
-            // Créer et afficher les détails du Pokemon cliqué
-            let div = document.createElement('div');
-                div.classList.add('description')
-                div.innerHTML = `
-                    <h2>${pokemonData.name}</h2>
-                    <p>Types: ${pokemonData.types.join(', ')}</p>
-                    <img src="${pokemonData.photo}" alt="${pokemonData.name}">
-                    <p><strong>Description</strong>: ${themeDescription}</p>
-                `
-            document.querySelector('body').appendChild(div)
-
         })
-        
-    })
-} catch(error){
-    console.error('Erreur lors de la récupération des données:', error);
-}
+    } catch(error) {
+        console.error('Erreur lors de la récupération des données:', error);
+    }
 };
 
-displayRandomPkmn('feu');
+displayRandomPokemons ('feu');
