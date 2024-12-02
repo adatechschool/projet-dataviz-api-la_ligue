@@ -1,0 +1,246 @@
+body {
+    background: linear-gradient(var(--background-gradient-top), 75%, var(--background-gradient-bottom));
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+
+    /* Police */
+    color: var(--text-color);
+    font-family: Georgia, serif;
+
+    transition: background 0.3s ease; /* Animation douce lors du changement */
+}
+
+#menu {
+    background-color: var(--menu-background);
+    border-bottom: solid var(--border-color);
+
+    /* Taille */
+    min-height: 10vh;
+
+    /* Positionnement */
+    display: flex;
+    justify-content: space-between;
+
+    transition: background-color 0.3s ease;
+}
+
+/* Containeur à gauche du menu */
+#menu-side-left {
+    /*border: solid greenyellow;*/
+
+    /* Positionnement */
+    display: flex;
+}
+
+#display-hour {
+    /*background-color: green;*/
+
+    /* Taille */
+    min-width: 10vw;
+
+    /* Positionnement */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#logo {
+    /*background-color: yellow;*/
+    /*border: solid yellow;*/
+
+    /* Taille */
+    min-width: 10vw;
+}
+
+#logo-title {
+    /*background-color: cadetblue;*/
+    /*border: solid cadetblue;*/
+
+    /* Taille */
+    min-width: 10vw;
+}
+
+/* Containeur à droite du Menu*/
+#menu-side-right {
+    /*border: solid;*/
+
+    /* Positionnement */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0.5rem 0.5rem;
+}
+
+#search-bar {
+    /*background-color: blueviolet;*/
+    border: solid var(--border-color);
+
+    /* Taille */
+    min-width: 30vw;
+    min-height: 4vh;
+
+    /* Positionnement */
+    margin: 0 2rem 0 0.5rem;
+
+    /* Bordures */
+    border-radius: 25px;
+}
+
+/* DARKMODE */
+#switch-container {
+    /* Positionnement */
+    margin: 0 0.5rem 0 0.5rem;
+}
+
+/* Variables pour les couleurs des thèmes */
+:root {
+    /* Couleurs pour le thème clair */
+    --background-gradient-top: #BBACFC;
+    --background-gradient-bottom: #D09147;
+    --menu-background: #BBACFC;
+    --text-color: #FFFFFF;
+    --border-color: #FFFFFF;
+    --search-bar-border: #FFFFFF;
+    --arc-astro-border: #FFFFFF;
+    --form-text: #FFFFFF;
+}
+
+[data-theme="dark"] {
+    /* Couleurs pour le thème sombre */
+    --background-gradient-top: #2C0F39;
+    --background-gradient-bottom: #BBACFC;
+    --menu-background: #2C0F39;
+    --text-color: #FFFFFF;
+    --border-color: #FFFFFF;
+    --search-bar-border: #FFFFFF;
+    --arc-astro-border: #FFFFFF;
+    --form-text: #FFFFFF;
+}
+
+.theme-switch {
+    width: 60px;
+    height: 30px;
+    padding: 2px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+[data-theme="dark"] .theme-switch {
+    background-color: #666;
+}
+
+.switch-handle {
+    width: 26px;
+    height: 26px;
+    background-color: #fff;
+    border-radius: 50%;
+    /*position: absolute;*/
+    left: 2px;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[data-theme="dark"] .switch-handle {
+    transform: translateX(30px);
+}
+
+/* Styles pour les icônes */
+.sun, .moon {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+}
+
+.sun {
+    background: #ffd700;
+    border-radius: 50%;
+}
+
+.moon {
+    background: #ccc;
+    border-radius: 50%;
+    transform: scale(0);
+}
+
+[data-theme="dark"] .sun {
+    transform: scale(0);
+}
+
+[data-theme="dark"] .moon {
+    transform: scale(1);
+}
+
+/* Petite étoile à côté de la lune */
+.star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    right: 8px;
+    top: 8px;
+    opacity: 0;
+}
+
+[data-theme="dark"] .star {
+    opacity: 1;
+}
+
+[data-theme="dark"] .menu {
+    background: linear-gradient(#2C0F39, 75%, #BBACFC);;
+}
+
+#astro-container {
+    /* Taille */
+    min-height: 70vh;
+    padding: 5em 10em;
+
+    /* Positionnement */
+    display: flex;
+    justify-content: space-between;
+}
+
+.arc-astro {
+    /* Taille */
+    min-width: 30vw;
+    min-height: 10vh;
+    padding: 2em;
+}
+
+#arc-astro-type {
+    /*background-color: pink;*/
+    border: solid;
+}
+
+#arc-astro-type, #arc-astro-description {
+    border: solid var(--arc-astro-border);
+}
+
+/* Formulaire */
+#form-astro {
+    /*background-color: blue;*/
+    color: var(--form-text);
+
+    /* Positionnement */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#arc-astro-description {
+    /*background-color: navajowhite;*/
+    border: solid;
+}
+
+/* Ajout de transitions pour une animation douce */
+#menu, .arc-astro, #search-bar {
+    transition: all 0.3s ease;
+}

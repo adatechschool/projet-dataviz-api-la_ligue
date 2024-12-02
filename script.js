@@ -1,115 +1,234 @@
-// Intéraction avec le DOM
-const displayElement = document.querySelector("#display-hour");
-// console.log(displayHour);
+import { pokemonAstrologyThemes } from "./theme.js";
 
-// Ici on affiche l'heure du navigateur 
-function setCurrentTime() {
-    let now = new Date();
-    let hour = now.getHours();
-    // console.log(hour);
-    let min = now.getMinutes();
+document.addEventListener("DOMContentLoaded", () => {
+    // Intéraction avec le DOM
+    const displayElement = document.querySelector("#display-hour");
+    const themeSwitch = document.querySelector('.theme-switch');
 
-    let displayHour = (hour < 10 ? "0" : "") + hour;
-    let displayMin = (min < 10 ? "0" : "") + min;
+    // --- Ici on affiche l'heure du navigateur ---
+    function setCurrentTime() {
+        let now = new Date();
+        let hour = now.getHours();
+        let min = now.getMinutes();
 
-    displayElement.innerText = `${displayHour}h${displayMin}`;
+        let displayHour = (hour < 10 ? "0" : "") + hour;
+        let displayMin = (min < 10 ? "0" : "") + min;
 
-    darkMode(hour);
+        console.log(`Current time set to: ${displayHour}h${displayMin}`);
+        displayElement.innerText = `${displayHour}h${displayMin}`;
 
-};
+        // Appelle le darkmode
+        darkmodeTime(hour);
+    }
 
-// Gestion du dark mode
-const darkMode = (navHour) => {
+    // --- Gestion du dark mode ---
 
-     // Vérification si on est entre 18h et 6h du matin
-    // Ici pour un mode automatique :
-    if (navHour >= 18 || navHour < 6) {
-        // Mode nuit
-        displayElement.style.color = "white";
-        document.body.style.background = "black";
+    // Variables globales pour gérer l'état du thème
+    let isAutoDarkMode = true;  // Pour suivre si le mode auto est actif. Au démarrage c'est actif.
+    let isDarkModeTime = false; // Pour suivre si c'est l'heure du mode sombre
+
+    // Darkmode selon l'heure
+    const darkmodeTime = (navHour) => {
+        if (navHour >= 18 || navHour < 6) {
+            isDarkModeTime = true;
+        } else {
+            isDarkModeTime = false;
+        }
+
+        console.log(`Dark mode status set to: ${isDarkModeTime}`);
+        if (isAutoDarkMode === true) {
+            applyTheme(isDarkModeTime);
+        }
+    }
+
+    // Fonction pour appliquer le thème
+    function applyTheme(themeStatus) {
+        console.log(`Applying theme: ${themeStatus ? 'dark' : 'light'}`);
+        if (themeStatus) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    }
+
+    // Bouton darkmode
+    if (themeSwitch) {
+        themeSwitch.addEventListener('click', () => {
+            isAutoDarkMode = false;
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            console.log(`Theme switch clicked. Current theme: ${currentTheme}`);
+
+            if (currentTheme === 'dark') {
+                applyTheme(false);
+            } else {
+                applyTheme(true);
+            }
+        });
+    }
+
+    setCurrentTime();
+    setInterval(setCurrentTime, 2000);
+
+    // Récupérer les types pour la liste déroulante
+    const exPokemonTypes = async () => {
+        try {
+            console.log("Fetching selected Pokémon types...");
+            const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log("Types fetched successfully:", data);
+
+            // Filtrer uniquement les types désirés
+            const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
+            return data
+                .map(type => type.name.fr)
+                .filter(typeName => selectedTypes.includes(typeName.toLowerCase()));
+        } catch (error) {
+            console.error('Erreur lors de la récupération des types:', error);
+            return [];
+        }
+    };
+
+    const typesDropDown = async () => {
+        const dropdown = document.getElementById("options");
+
+        if (!dropdown) {
+            console.error("Dropdown element not found in the DOM.");
+            return;
+        }
+
+        console.log("Populating the dropdown with types...");
+        dropdown.innerHTML = '';
+
+        try {
+            const types = await exPokemonTypes();
+            types.forEach((type) => {
+                const option = document.createElement("option");
+                option.value = type.toLowerCase();
+                option.textContent = type;
+                dropdown.appendChild(option);
+            });
+            console.log("Dropdown populated successfully with types.");
+        } catch (error) {
+            console.error("Erreur lors du remplissage de la liste déroulante :", error);
+
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Erreur de chargement";
+            dropdown.appendChild(option);
+        }
+    };
+
+    typesDropDown();
+
+    const dropdown = document.getElementById("options");
+    if (dropdown) {
+        dropdown.addEventListener("change", (event) => {
+            console.log(`Dropdown changed to: ${event.target.value}`);
+            if (event.target.value) {
+                displayRandomPkmn(event.target.value);
+            }
+        });
     } else {
-        // Mode jour
-        displayElement.style.color = "black";
-        document.body.style.background = "white";
+        console.error("Dropdown element not found in the DOM.");
+    }
+
+    const fetchPokemonByType = async (pkmnType) => {
+        try {
+            console.log(`Fetching Pokémon of type: ${pkmnType}`);
+            const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log("Pokémon data fetched successfully:", data);
+
+            const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
+            if (!selectedTypes.includes(pkmnType.toLowerCase())) {
+                console.error(`Type ${pkmnType} is not a valid selected type.`);
+                return [];
+            }
+
+            const matchingPokemons = data.filter(pokemon =>
+                pokemon.types.some(type => type.name.toLowerCase() === pkmnType)
+            ).map(pokemon => ({
+                name: pokemon.name.fr,
+                types: pokemon.types.map(type => type.name),
+                photo: pokemon.sprites.regular
+            }));
+
+            console.log(`Matching Pokémon found:`, matchingPokemons);
+            return matchingPokemons;
+        } catch (error) {
+            console.error('Erreur lors de la récupération des données:', error);
+            return [];
+        }
     };
-};
 
-setCurrentTime();
-setInterval(setCurrentTime, 2000);
-
-// récupérer les types
-const fetchAllTypes = async () => {
-    try {
-        const response = await fetch('https://tyradex.vercel.app/api/v1/types');
-        const data = await response.json();
-
-        // Retourner seulement les noms en français
-        return data.map(type => type.name.fr);
-    } catch (error) {
-        console.error('Erreur lors de la récupération des types:', error);
-        return [];
+    // Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
+    function shuffle(array) {
+        console.log("Shuffling Pokémon array...");
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        console.log("Array shuffled.");
+        return array;
     }
-};
 
-// récupérer les types de pokemon
-const fetchAllTypes = async () => {
-    try {
-        const response = await fetch('https://tyradex.vercel.app/api/v1/types');
-        const data = await response.json();
-  
-        return data.map(type => type.name.fr);
-    } catch (error) {
-        console.error('Erreur lors de la récupération des types:', error);
-        return [];
-    }
-  };
+    // Afficher les pokemons dans le DOM 
+    const displayRandomPkmn = async (type) => {
+        try {
+            console.log(`Displaying Pokémon of type: ${type}`);
+            const allPokemons = await fetchPokemonByType(type);
+            const randomPokemons = shuffle(allPokemons);
+            const threeRandomPokemons = randomPokemons.slice(0, 3);
 
-const fetchPokemonByType = async (pkmnType) => {
-    try {
-        const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
-        const data = await response.json();
+            threeRandomPokemons.forEach(pokemon => {
+                let div = document.createElement('div');
+                div.classList.add('pokemon');
+                div.innerText = pokemon.name;
+                div.pokemonData = pokemon;
+                document.querySelector('body').appendChild(div);
+                console.log(`Displayed Pokémon: ${pokemon.name}`);
+            });
 
-        const matchingPokemons = [];
+            const pokemonElements = document.querySelectorAll('.pokemon');
+            const themeAstro = pokemonAstrologyThemes;
 
-        for(const pokemon of data) {
-            if (pokemon.types.find((type) => {
-                return type.name.toLowerCase() === pkmnType // toLowerCase a virer lorsque la liste déroulante sera intégrer.
-            }))
-            matchingPokemons.push(pokemon.name.fr)
-            //console.log('POKEMON:', pokemon.name.fr)
-        };
+            pokemonElements.forEach(pokemon => {
+                pokemon.addEventListener('click', (e) => {
+                    const target = e.target;
+                    const pokemonData = target.pokemonData;
+                    console.log(`Pokemon clicked: ${pokemonData.name}`);
 
-        return matchingPokemons;
+                    pokemonElements.forEach(p => p.style.display = 'none');
 
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error)
-        return []
+                    let themeDescription = "";
+                    pokemonData.types.forEach(type => {
+                        if (themeAstro[type]) {
+                            const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
+                            console.log(`Theme matched for type ${type}:`, randomTheme);
+                            themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`;
+                        }
+                    });
+
+                    let div = document.createElement('div');
+                    div.classList.add('description');
+                    div.innerHTML = `
+                        <h2>${pokemonData.name}</h2>
+                        <p>Types: ${pokemonData.types.join(', ')}</p>
+                        <img src="${pokemonData.photo}" alt="${pokemonData.name}">
+                        <p><strong>Description</strong>: ${themeDescription}</p>
+                    `;
+                    document.querySelector('body').appendChild(div);
+                    console.log(`Displayed Pokémon details for: ${pokemonData.name}`);
+                });
+            });
+        } catch (error) {
+            console.error('Erreur lors de la récupération des données:', error);
+        }
     };
-};
-
-// Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-
-        // Échanger les éléments array[i] et array[j]
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-
-    return array;
-}
-
-// Afficher les pokemons dans le DOM 
-const displayRandomPkmn = async (type) => {
-    const allPokemons = await fetchPokemonByType(type);
-    const randomPokemons = shuffle(allPokemons);
-    const threeRandomPokemons = randomPokemons.slice(0, 3)
-
-    // Interaction dans le DOM
-    let p = document.createElement('p');
-    p.innerText = threeRandomPokemons;
-    document.querySelector('body').appendChild(p)
-
-    //return randomPokemons
-}
-displayRandomPkmn('feu')
+});
