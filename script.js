@@ -1,9 +1,9 @@
 import { pokemonAstrologyThemes } from "./theme.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Intéraction avec le DOM
     const displayElement = document.querySelector("#display-hour");
     const themeSwitch = document.querySelector('.theme-switch');
+    const form = document.querySelector('form');  // Ajout de la sélection du formulaire
 
     // --- Ici on affiche l'heure du navigateur ---
     function setCurrentTime() {
@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(`Current time set to: ${displayHour}h${displayMin}`);
         displayElement.innerText = `${displayHour}h${displayMin}`;
 
-        // Appelle le darkmode
         darkmodeTime(hour);
     }
 
@@ -102,18 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 option.textContent = type;
                 dropdown.appendChild(option);
             });
-
-            // Ajoutez l'écouteur d'événement "change" à l'intérieur de la fonction
-            dropdown.addEventListener("change", (event) => {
-                console.log(`Dropdown changed to: ${event.target.value}`);
-                if (event.target.value) {
-                    displayRandomPkmn(event.target.value);
-                }
-            });
-
         } catch (error) {
             console.error("Erreur lors du remplissage de la liste déroulante :", error);
-
             const option = document.createElement("option");
             option.value = "";
             option.textContent = "Erreur de chargement";
@@ -122,6 +111,19 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     typesDropDown();
+
+    // Fonction pour valider le choix de l'utilisateur
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();  // Empêche la soumission du formulaire
+        const selectedType = document.getElementById("options").value;
+
+        if (selectedType) {
+            console.log(`User selected: ${selectedType}`);
+            await displayRandomPkmn(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
+        } else {
+            console.log("No Pokémon type selected.");
+        }
+    });
 
     const fetchPokemonByType = async (pkmnType) => {
         try {
@@ -182,8 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const pokemonElements = document.querySelectorAll('.pokemon');
-            const themeAstro = pokemonAstrologyThemes;
-
             pokemonElements.forEach(pokemon => {
                 pokemon.addEventListener('click', (e) => {
                     const target = e.target;
@@ -194,10 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     let themeDescription = "";
                     pokemonData.types.forEach(type => {
-                        if (themeAstro[type]) {
-                            const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
-                            console.log(`Theme matched for type ${type}:`, randomTheme);
-                            themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`;
+                        if (pokemonAstrologyThemes[type]) {
+                            const randomTheme = pokemonAstrologyThemes[type][Math.floor(Math.random() * pokemonAstrologyThemes[type].length)];
+                            themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}</p>`;
                         }
                     });
 
