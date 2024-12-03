@@ -1,4 +1,4 @@
-import { pokemonAstrologyThemes } from "./theme.js";
+import { pokemonAstrologyThemes } from "./js/theme.js";
 
 // Intéraction avec le DOM
 const displayElement = document.querySelector("#display-hour");
@@ -108,7 +108,7 @@ const fetchAllTypes = async () => {
     }
 }
 
-const fetchPokemonByType = async (pkmnType) => {
+const fetchPokemonByType = async (pokemonType) => {
     try {
         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
         const data = await response.json();
@@ -116,7 +116,8 @@ const fetchPokemonByType = async (pkmnType) => {
         const matchingPokemons = [];
 
         for(const pokemon of data) {
-            if (pokemon.types.find((type) => type.name.toLowerCase() === pkmnType)){// toLowerCase a virer lorsque la liste déroulante sera intégrer.
+            if (pokemon.types.find((type) => type.name.toLowerCase() === pokemonType)){// toLowerCase a virer lorsque la
+                // liste déroulante sera intégrer.
             matchingPokemons.push({
                 name: pokemon.name.fr,
                 types: pokemon.types.map(type => type.name),
@@ -176,7 +177,7 @@ const displayRandomPokemons = async (type) => {
 
                     const astralDescription = astralChartCorrespondence(pokemonData);
 
-                    displayDetailsOfOnePokémon(pokemonData, astralDescription);
+                    displayDetailsOfOnePokemon(pokemonData, astralDescription);
                 })
             })
     } catch(error) {
@@ -203,7 +204,7 @@ const astralChartCorrespondence = (data) => {
 }
 
 // Gère l'affichage des détails du pokémon choisi
-const displayDetailsOfOnePokémon = (data, description) => {
+const displayDetailsOfOnePokemon = (data, description) => {
     let descriptionPokemon = document.createElement('div');
 
     descriptionPokemon.classList.add('description');

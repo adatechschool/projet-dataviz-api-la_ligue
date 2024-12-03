@@ -99,6 +99,7 @@ body {
 /* Variables pour les couleurs des thèmes */
 :root {
     /* Couleurs pour le thème clair */
+    --bg-image: url('images/IMG-20241130-WA0002.jpg');
     --background-gradient-top: #BBACFC;
     --background-gradient-bottom: #D09147;
     --menu-background: #BBACFC;
@@ -111,6 +112,7 @@ body {
 
 [data-theme="dark"] {
     /* Couleurs pour le thème sombre */
+    --bg-image: url('images/IMG-20241127-WA0002.jpg');
     --background-gradient-top: #2C0F39;
     --background-gradient-bottom: #BBACFC;
     --menu-background: #2C0F39;
@@ -197,11 +199,13 @@ body {
 }
 
 [data-theme="dark"] .menu {
-    background: linear-gradient(#2C0F39, 75%, #BBACFC);;
+    background: linear-gradient(#2C0F39, 75%, #BBACFC);
 }
 
 #astro-container {
-    background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));
+    background-image: var(--bg-image);
+    background-size: cover;
+    /*background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));*/
 
     /* Taille */
     min-height: 70vh;
