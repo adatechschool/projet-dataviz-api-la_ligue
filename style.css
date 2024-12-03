@@ -203,9 +203,9 @@ body {
 }
 
 #astro-container {
-    background-image: var(--bg-image);
+    /*background-image: var(--bg-image);*/
     background-size: cover;
-    /*background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));*/
+    background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));
 
     /* Taille */
     min-height: 70vh;
@@ -224,11 +224,39 @@ body {
 }
 
 #arc-astro-type {
-    /*background-color: pink;*/
-    border: solid;
+    background-color: #9692DA;
+
+    /* Positionnement */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 30vw;
+}
+
+#buttons-pokemon {
+    /* Positionnement */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2em 0 2em 0;
+}
+
+.pokemon {
+    margin: 0.5em 0 0.5em 0;
+    padding: 1em;
+
+    border: solid black;
+    border-radius: 30px;
+
+    background-color: #2C0F39;
 }
 
 #arc-astro-type, #arc-astro-description {
+    /* Bordures */
+    border-radius: 25px;
     border: solid var(--arc-astro-border);
 }
 
@@ -244,8 +272,31 @@ body {
 }
 
 #arc-astro-description {
-    /*background-color: navajowhite;*/
-    border: solid;
+    background-color: #9692DA;
+    max-width: 30vw;
+
+    display: flex;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#pokemon-name {
+    display: flex;
+    justify-content: center;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#img-pokemon {
+    max-width: 25vw;
 }
 
 /* Ajout de transitions pour une animation douce */
