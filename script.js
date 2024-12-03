@@ -22,12 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- Gestion du dark mode ---
+    let isAutoDarkMode = true;
+    let isDarkModeTime = false;
 
-    // Variables globales pour gérer l'état du thème
-    let isAutoDarkMode = true;  // Pour suivre si le mode auto est actif. Au démarrage c'est actif.
-    let isDarkModeTime = false; // Pour suivre si c'est l'heure du mode sombre
-
-    // Darkmode selon l'heure
     const darkmodeTime = (navHour) => {
         if (navHour >= 18 || navHour < 6) {
             isDarkModeTime = true;
@@ -41,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Fonction pour appliquer le thème
     function applyTheme(themeStatus) {
         console.log(`Applying theme: ${themeStatus ? 'dark' : 'light'}`);
         if (themeStatus) {
@@ -51,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Bouton darkmode
     if (themeSwitch) {
         themeSwitch.addEventListener('click', () => {
             isAutoDarkMode = false;
@@ -69,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setCurrentTime();
     setInterval(setCurrentTime, 2000);
 
-    // Récupérer les types pour la liste déroulante
     const exPokemonTypes = async () => {
         try {
             console.log("Fetching selected Pokémon types...");
@@ -80,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
             console.log("Types fetched successfully:", data);
 
-            // Filtrer uniquement les types désirés
             const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
             return data
                 .map(type => type.name.fr)
@@ -109,6 +102,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 option.textContent = type;
                 dropdown.appendChild(option);
             });
+
+            // Ajoutez l'écouteur d'événement "change" à l'intérieur de la fonction
+            dropdown.addEventListener("change", (event) => {
+                console.log(`Dropdown changed to: ${event.target.value}`);
+                if (event.target.value) {
+                    displayRandomPkmn(event.target.value);
+                }
+            });
+
         } catch (error) {
             console.error("Erreur lors du remplissage de la liste déroulante :", error);
 
@@ -119,14 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    typesDropDown().then(() => {
-        dropdown.addEventListener("change", (event) => {
-            console.log(`Dropdown changed to: ${event.target.value}`);
-            if (event.target.value) {
-                displayRandomPkmn(event.target.value);
-            }
-        });
-    });    
+    typesDropDown();
 
     const fetchPokemonByType = async (pkmnType) => {
         try {
@@ -160,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
     function shuffle(array) {
         console.log("Shuffling Pokémon array...");
         for (let i = array.length - 1; i > 0; i--) {
@@ -171,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return array;
     }
 
-    // Afficher les pokemons dans le DOM 
     const displayRandomPkmn = async (type) => {
         try {
             console.log(`Displaying Pokémon of type: ${type}`);
@@ -225,4 +218,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-
