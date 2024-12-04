@@ -6,7 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script defer type="module" src="script.js"></script>
-    <script defer type="module" src="theme.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +21,8 @@
         </div>
 
         <div id="menu-side-right">
+            <input type="text" id="search" placeholder="Rechercher un Pokémon...">
+                <button id="searchButton">Rechercher</button>
             <div id="search-bar"></div>
             <button class="theme-switch" aria-label="Changer le thème">
                 <div class="switch-handle">
@@ -49,7 +50,7 @@
         </div>
 
         <div class="arc-astro" id="arc-astro-description">
-
+            <div class="pokemonResults"></div>
         </div>
     </div>
 </body>
