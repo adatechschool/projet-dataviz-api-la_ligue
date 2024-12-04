@@ -5,18 +5,52 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script type="module" defer src="script.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <script defer type="module" src="js/main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <title>Pokemonologie</title>
 </head>
 <body>
-    <div id="display-hour"></div>
-    <form>
-        <label for="options">Options :</label>
-        <select id="options" name="options">
-        </select>
-        <br><br>
-        <button type="submit">Valider</button>
-    </form>
+    <div id="menu">
+        <div id="menu-side-left">
+            <div id="display-hour"></div>
+            <img src="images/logo-01.svg" id="logo-title">
+        </div>
+
+        <div id="menu-side-right">
+            <input type="text" id="search" placeholder="Rechercher un Pokémon...">
+                <button id="searchButton">Rechercher</button>
+            <div id="search-bar"></div>
+            <button class="theme-switch" aria-label="Changer le thème">
+                <div class="switch-handle">
+                    <div class="sun"></div>
+                    <div class="moon"></div>
+                </div>
+                <div class="star"></div>
+            </button>
+        </div>
+    </div>
+
+    <div id="astro-container">
+        <div class="arc-astro" id="arc-astro-type">
+            <h1>Choisissez votre type</h1>
+            <form id="form-astro">
+                <label for="select-wrapper">Types :</label>
+                <div class="select-wrapper"></div>
+                <select class="select-types" name="options">
+                    <option value="option1">Option 1</option>
+                </select>
+                <button type="submit">Valider</button>
+            </form>
+
+            <div id="buttons-pokemon"></div>
+        </div>
+
+        <div class="arc-astro" id="arc-astro-description">
+            <div class="pokemonResults"></div>
+        </div>
+    </div>
 </body>
 </html>
