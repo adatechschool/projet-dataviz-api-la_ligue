@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script defer type="module" src="js/main.js"></script>
+    <script defer type="module" src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,9 +39,7 @@
             <form id="form-astro">
                 <label for="select-wrapper">Types :</label>
                 <div class="select-wrapper"></div>
-                <select class="select-types" name="options">
-                    <option value="option1">Option 1</option>
-                </select>
+                <select class="select-types" id="options" name="options"></select>
                 <button type="submit">Valider</button>
             </form>
 
