@@ -1,14 +1,9 @@
 import { pokemonAstrologyThemes } from "./theme.js";
 
 // Intéraction avec le DOM
-document.addEventListener("DOMContentLoaded", () => {
-    const dropdown = document.querySelector('#options');
-    const form = document.querySelector('form');  // Ajout de la sélection du formulaire
-});
-
-const displayElement = document.querySelector("#display-hour");
-const themeSwitch = document.querySelector('.theme-switch');
-const imgLogo = document.querySelector('#logo-title');
+    const displayElement = document.querySelector("#display-hour");
+    const themeSwitch = document.querySelector('.theme-switch');
+    const imgLogo = document.querySelector('#logo-title');
 
 // --- Ici on affiche l'heure du navigateur ---
 function setCurrentTime() {
@@ -96,83 +91,72 @@ setCurrentTime();
 setInterval(setCurrentTime, 2000);
 setInterval(changeLogo, 3000);
 
-// Ici on gère la liste déroulante
-const exPokemonTypes = async () => {
-    try {
-        console.log("Fetching selected Pokémon types...");
-        const response = await fetch('https://tyradex.vercel.app/api/v1/types');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+document.addEventListener("DOMContentLoaded", () => {
+    const dropdown = document.querySelector('#options');
+    const form = document.querySelector('form');  // Ajout de la sélection du formulaire
+
+    // Ici on gère la liste déroulante
+    const exPokemonTypes = async () => {
+        try {
+            console.log("Fetching selected Pokémon types...");
+            const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log("Types fetched successfully:", data);
+
+            const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
+            return data
+                .map(type => type.name.fr)
+                .filter(typeName => selectedTypes.includes(typeName.toLowerCase()));
+        } catch (error) {
+            console.error('Erreur lors de la récupération des types:', error);
+            return [];
         }
-        const data = await response.json();
-        console.log("Types fetched successfully:", data);
+    };
 
-        const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
-        return data
-            .map(type => type.name.fr)
-            .filter(typeName => selectedTypes.includes(typeName.toLowerCase()));
-    } catch (error) {
-        console.error('Erreur lors de la récupération des types:', error);
-        return [];
-    }
-};
+    const typesDropDown = async () => {
 
-const typesDropDown = async () => {
+        if (!dropdown) {
+            console.error("Dropdown element not found in the DOM.");
+            return;
+        }
 
-    if (!dropdown) {
-        console.error("Dropdown element not found in the DOM.");
-        return;
-    }
+        dropdown.innerHTML = '';
 
-    dropdown.innerHTML = '';
-
-    try {
-        const types = await exPokemonTypes();
-        types.forEach((type) => {
+        try {
+            const types = await exPokemonTypes();
+            types.forEach((type) => {
+                const option = document.createElement("option");
+                option.value = type.toLowerCase();
+                option.textContent = type;
+                dropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Erreur lors du remplissage de la liste déroulante :", error);
             const option = document.createElement("option");
-            option.value = type.toLowerCase();
-            option.textContent = type;
+            option.value = "";
+            option.textContent = "Erreur de chargement";
             dropdown.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Erreur lors du remplissage de la liste déroulante :", error);
-        const option = document.createElement("option");
-        option.value = "";
-        option.textContent = "Erreur de chargement";
-        dropdown.appendChild(option);
-    }
-};
+        }
+    };
 
-typesDropDown();
+    typesDropDown();
 
+    // Fonction pour valider le choix de l'utilisateur
+    form.addEventListener("submit", async (event) => { // Ne comprends l'utilisation de cet eventlisteners
+        event.preventDefault();  // Empêche la soumission du formulaire
+        const selectedType = document.getElementById("options").value;
 
-// Fonction pour valider le choix de l'utilisateur
-form.addEventListener("submit", async (event) => {
-    event.preventDefault();  // Empêche la soumission du formulaire
-    const selectedType = document.getElementById("options").value;
-
-    if (selectedType) {
-        // console.log(`User selected: ${selectedType}`);
-        await displayRandomPkmn(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
-    } else {
-        console.log("No Pokémon type selected.");
-    }
+        if (selectedType) {
+            // console.log(`User selected: ${selectedType}`);
+            await displayRandomPokemons(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
+        } else {
+            console.log("No Pokémon type selected.");
+        }
+    });
 });
-
-// À supprimer
-// // récupérer les types
-// const fetchAllTypes = async () => {
-//     try {
-//         const response = await fetch('https://tyradex.vercel.app/api/v1/types');
-//         const data = await response.json();
-//
-//         // Retourner seulement les noms en français
-//         return data.map(type => type.name.fr);
-//     } catch (error) {
-//         console.error('Erreur lors de la récupération des types:', error);
-//         return [];
-//     }
-// }
 
 const fetchPokemonByType = async (pokemonType) => {
     try {
@@ -182,8 +166,8 @@ const fetchPokemonByType = async (pokemonType) => {
         const matchingPokemons = [];
 
         // Récupérer les infos du pokemon dans un array [name, types, photo]
-        for(const pokemon of data) {
-            if (pokemon.types.find((type) => type.name.toLowerCase() === pokemonType)){// toLowerCase a virer lorsque la
+        for (const pokemon of data) {
+            if (pokemon.types.find((type) => type.name.toLowerCase() === pokemonType)) {// toLowerCase a virer lorsque la
                 // liste déroulante sera intégrer.
                 matchingPokemons.push({
                     name: pokemon.name.fr,
@@ -220,7 +204,7 @@ const displayRandomPokemons = async (type) => {
         const threeRandomPokemons = randomPokemons.slice(0, 3)
 
         threeRandomPokemons.forEach(pokemon => {
-            // Intéraction avec le DOM 
+            // Intéraction avec le DOM
             let detailsPokemon = document.createElement('div');
 
             detailsPokemon.classList.add('pokemon');
@@ -228,29 +212,29 @@ const displayRandomPokemons = async (type) => {
             detailsPokemon.pokemonData = pokemon;
 
             document.querySelector('#arc-astro-type').appendChild(detailsPokemon);
+        });
+
+        // Récupérer les élèments
+        const pokemonElements = document.querySelectorAll('.pokemon');
+
+        // Cliquer sur les pokemons
+        pokemonElements.forEach(pokemon => {
+            pokemon.addEventListener('click', (e) => {
+                const target = e.target;
+                const pokemonData = target.pokemonData // Récuperer les infos des pokemons
+
+                // Masquer les pokemons
+                pokemonElements.forEach(p => p.style.display = 'none');
+
+                const astralDescription = astralChartCorrespondence(pokemonData);
+
+                displayDetailsOfOnePokemon(pokemonData, astralDescription);
             });
-
-            // Récupérer les élèments
-            const pokemonElements = document.querySelectorAll('.pokemon');
-
-            // Cliquer sur les pokemons
-            pokemonElements.forEach(pokemon => {
-                pokemon.addEventListener('click', (e) => {
-                    const target = e.target;
-                    const pokemonData = target.pokemonData // Récuperer les infos des pokemons
-
-                    // Masquer les pokemons
-                    pokemonElements.forEach(p => p.style.display = 'none');
-
-                    const astralDescription = astralChartCorrespondence(pokemonData);
-
-                    displayDetailsOfOnePokemon(pokemonData, astralDescription);
-                })
-            })
-    } catch(error) {
+        });
+    } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
     }
-};
+}
 
 // Gère la correspondance avec le thème astral
 const astralChartCorrespondence = (data) => {
@@ -260,7 +244,7 @@ const astralChartCorrespondence = (data) => {
     let themeDescription = "";
 
     data.types.forEach(type => {
-        if(themeAstro[type]){
+        if (themeAstro[type]) {
             const randomTheme = themeAstro[type][Math.floor(Math.random() * themeAstro[type].length)];
             // console.log(randomTheme);
             themeDescription += `<p><strong>${randomTheme.theme}</strong> : ${randomTheme.description}`;
@@ -285,18 +269,18 @@ const displayDetailsOfOnePokemon = (data, description) => {
     document.querySelector('#arc-astro-description').appendChild(descriptionPokemon)
 }
 
-displayRandomPokemons ('feu');
+// displayRandomPokemons('feu');
 
 // searchbar
 const searchTerm = document.getElementById('search');
 
 // Rechercher des pokemons dans la searchbar
-document.getElementById('searchButton').addEventListener('click', () =>{
+document.getElementById('searchButton').addEventListener('click', () => {
     const input = searchTerm.value.toLowerCase();
-    searchPokemon(input)
-})
+    searchPokemon(input);
+});
 
-// Recuperer tous les pokemons 
+// Recuperer tous les pokemons
 const searchPokemon = async (input) => {
     try {
         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1');
@@ -304,49 +288,49 @@ const searchPokemon = async (input) => {
 
         // Filtrer les pokemons par noms
         const filteredPokemons = data.filter(pokemon => pokemon.name.fr.toLowerCase().includes(input));
-        displaySearchResults(filteredPokemons)
-    } catch(error){
-        console.error('Erreur lors de la recupération des données', error)
+        displaySearchResults(filteredPokemons);
+    } catch (error) {
+        console.error('Erreur lors de la recupération des données', error);
     }
-};
+}
 
-const displaySearchResults = pokemons => {
-    const description = pokemonAstrologyThemes
+const displaySearchResults = (pokemons) => {
+    const description = pokemonAstrologyThemes;
     const resultsContainer = document.querySelector('.pokemonResults');
     resultsContainer.innerHTML = '';
 
-    // Vérifier qu'on récupère bien un pokemon 
-    if(!pokemons || !pokemons.length){
+    // Vérifier qu'on récupère bien un pokemon
+    if (!pokemons || !pokemons.length) {
         resultsContainer.innerHTML = `<p>Aucun Pokémon trouvé</p>`;
         return;
     }
 
     // Correspondre les pokémons avec les thèmes
     pokemons.forEach(pokemon => {
-        
+
         let types = pokemon.types.map(type => type.name); // Récupérer les types de pokemon par nom
         let themesForType = [];
 
         // Attribuer une description en fonction du type de pokemon rechercher
         types.forEach(type => {
-            if(description[type]) { 
-                let randomTheme = description[type][Math.floor(Math.random() * description[type].length)]; 
-                themesForType.push(`<p><strong>${randomTheme.theme}</strong>: ${randomTheme.description}</p>`); 
+            if (description[type]) {
+                let randomTheme = description[type][Math.floor(Math.random() * description[type].length)];
+                themesForType.push(`<p><strong>${randomTheme.theme}</strong>: ${randomTheme.description}</p>`);
             } else {
                 themesForType.push(`<p><strong>${type}</strong> : Aucune description trouvée.</p>`);
             }
 
-        // Intéraction avec le DOM
-        let div = document.createElement('div');
-        div.classList.add('pokemon');
-        div.innerHTML = `
-        <h2>${pokemon.name.fr}</h2>
-        <p>Types: ${pokemon.types.map(type => type.name).join(', ')}</p>
-        <img src="${pokemon.sprites.regular}" alt="${pokemon.name.fr}">
-        <h3>Description: </h3>${themesForType.join('')}
-        `;
-        resultsContainer.appendChild(div);
+            // Intéraction avec le DOM
+            let div = document.createElement('div');
+            div.classList.add('pokemon');
+            div.innerHTML = `
+            <h2>${pokemon.name.fr}</h2>
+            <p>Types: ${pokemon.types.map(type => type.name).join(', ')}</p>
+            <img src="${pokemon.sprites.regular}" alt="${pokemon.name.fr}">
+            <h3>Description: </h3>${themesForType.join('')}
+            `;
+            resultsContainer.appendChild(div);
+        });
     })
-})
-
 }
+
