@@ -94,6 +94,7 @@ const fetchPokemonByType = async (pkmnType) => {
 
         const matchingPokemons = [];
 
+        // Récupérer les infos du pokemon dans un array [name, types, photo]
         for(const pokemon of data) {
             if (pokemon.types.find((type) => type.name.toLowerCase() === pkmnType)){// toLowerCase a virer lorsque la liste déroulante sera intégrer.
             matchingPokemons.push({
@@ -139,6 +140,7 @@ const displayRandomPokemons = async (type) => {
         */
 
         threeRandomPokemons.forEach(pokemon => {
+            // Intéraction avec le DOM 
             let detailsPokemon = document.createElement('div');
             detailsPokemon.classList.add('pokemon');
             detailsPokemon.innerText = pokemon.name;
@@ -197,7 +199,6 @@ const searchTerm = document.getElementById('search');
 // Rechercher des pokemons dans la searchbar
 document.getElementById('searchButton').addEventListener('click', () =>{
     const input = searchTerm.value.toLowerCase();
-    console.log('input:', input)
     searchPokemon(input)
 })
 
@@ -207,9 +208,8 @@ const searchPokemon = async (input) => {
         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1');
         const data = await response.json();
 
-        // Filtrer les pokemons 
+        // Filtrer les pokemons par noms
         const filteredPokemons = data.filter(pokemon => pokemon.name.fr.toLowerCase().includes(input));
-        console.log(filteredPokemons)
         displaySearchResults(filteredPokemons)
     } catch(error){
         console.error('Erreur lors de la recupération des données', error)
@@ -218,31 +218,31 @@ const searchPokemon = async (input) => {
 
 const displaySearchResults = pokemons => {
     const description = pokemonAstrologyThemes
-    console.log('description', description)
     const resultsContainer = document.querySelector('.pokemonResults');
     resultsContainer.innerHTML = '';
 
+    // Vérifier qu'on récupère bien un pokemon 
+    if(!pokemons || !pokemons.length){
+        resultsContainer.innerHTML = `<p>Aucun Pokémon trouvé</p>`;
+        return;
+    }
+
     // Correspondre les pokémons avec les thèmes
     pokemons.forEach(pokemon => {
-        console.log('pokemon', pokemon);
         
-        let types = pokemon.types.map(type => type.name);
+        let types = pokemon.types.map(type => type.name); // Récupérer les types de pokemon par nom
         let themesForType = [];
 
-        console.log('types', types)
-
+        // Attribuer une description en fonction du type de pokemon rechercher
         types.forEach(type => {
-            console.log(`Checking type: ${type}`)
             if(description[type]) { 
                 let randomTheme = description[type][Math.floor(Math.random() * description[type].length)]; 
-                console.log('randomTheme', randomTheme); 
                 themesForType.push(`<p><strong>${randomTheme.theme}</strong>: ${randomTheme.description}</p>`); 
             } else {
                 themesForType.push(`<p><strong>${type}</strong> : Aucune description trouvée.</p>`);
-        }
+            }
 
-        console.log('themesForType', themesForType);
-
+        // Intéraction avec le DOM
         let div = document.createElement('div');
         div.classList.add('pokemon');
         div.innerHTML = `
@@ -252,7 +252,6 @@ const displaySearchResults = pokemons => {
         <h3>Description: </h3>${themesForType.join('')}
         `;
         resultsContainer.appendChild(div);
-
     })
 })
 
