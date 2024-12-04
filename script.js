@@ -1,13 +1,12 @@
 import { pokemonAstrologyThemes } from "./theme.js";
 
 // Intéraction avec le DOM
-document.addEventListener("DOMContentLoaded", () => {
-    const displayElement = document.querySelector("#display-hour");
-    const themeSwitch = document.querySelector('.theme-switch');
-    const form = document.querySelector('form');  // Ajout de la sélection du formulaire
-    const imgLogo = document.querySelector('#logo-title');
-    const dropdown = document.querySelector('#options');
-});
+const displayElement = document.querySelector("#display-hour");
+const themeSwitch = document.querySelector('.theme-switch');
+const form = document.querySelector('form');  // Ajout de la sélection du formulaire
+const imgLogo = document.querySelector('#logo-title');
+const dropdown = document.querySelector('#options');
+
 
 // --- Ici on affiche l'heure du navigateur ---
 function setCurrentTime() {
@@ -101,13 +100,11 @@ setInterval(changeLogo, 3000);
 // Ici on gère la liste déroulante
 const exPokemonTypes = async () => {
     try {
-        console.log("Fetching selected Pokémon types...");
         const response = await fetch('https://tyradex.vercel.app/api/v1/types');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Types fetched successfully:", data);
 
         const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
         return data
@@ -155,7 +152,7 @@ form.addEventListener("submit", async (event) => {
 
     if (selectedType) {
         // console.log(`User selected: ${selectedType}`);
-        await displayRandomPkmn(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
+        await displayRandomPokemons(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
     } else {
         console.log("No Pokémon type selected.");
     }
@@ -181,6 +178,8 @@ const fetchPokemonByType = async (pokemonType) => {
         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
         const data = await response.json();
 
+        let matchingPokemons = []
+
         // Récupérer les infos du pokemon dans un array [name, types, photo]
         for(const pokemon of data) {
             if (pokemon.types.find((type) => type.name.toLowerCase() === pokemonType)){// toLowerCase a virer lorsque la
@@ -202,12 +201,10 @@ const fetchPokemonByType = async (pokemonType) => {
 }
 
 function shuffle(array) {
-    console.log("Shuffling Pokémon array...");
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
-    console.log("Array shuffled.");
     return array;
 }
 
@@ -284,7 +281,7 @@ const displayDetailsOfOnePokemon = (data, description) => {
     document.querySelector('#arc-astro-description').appendChild(descriptionPokemon)
 }
 
-displayRandomPokemons ('feu');
+//displayRandomPokemons ('feu');
 
 // searchbar
 const searchTerm = document.getElementById('search');
