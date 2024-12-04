@@ -82,9 +82,13 @@ body {
     margin: 0 0.5rem 0 0.5rem;
 }
 
+#search-button {
+
+}
+
 /* Variables pour les couleurs des thèmes */
 :root {
-    --bg-image: url('images/HiPaint_1733226516152.jpg');
+    /*--bg-image: url('images/HiPaint_1733226516152.jpg');*/
     --background-gradient-top: #BBACFC;
     --background-gradient-bottom: #D09147;
     --menu-background: #BBACFC;
@@ -101,7 +105,7 @@ body {
 
 [data-theme="dark"] {
     /* Couleurs pour le thème sombre */
-    --bg-image: url('images/IMG-20241127-WA0002.jpg');
+    /*--bg-image: url('images/IMG-20241127-WA0002.jpg');*/
     --background-gradient-top: #2C0F39;
     --background-gradient-bottom: #BBACFC;
     --menu-background: #2C0F39;
@@ -194,7 +198,7 @@ body {
 #astro-container {
     background-image: var(--bg-image);
     background-size: cover;
-    /*background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));*/
+    background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));
 
     min-height: 70vh;
     padding: 5em 10em;
@@ -249,8 +253,8 @@ body {
 .select-wrapper::after {
     content: '';
     position: absolute;
-    right: 16px;
-    top: 50%;
+    left: 448px;
+    /*!*top: 50%;*! Position sur l'écran*/
     transform: translateY(-50%);
     width: 10px;
     height: 10px;
