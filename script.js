@@ -1,7 +1,16 @@
 // // Intéraction avec le DOM
 // const displayElement = document.querySelector("#display-hour");
 // // console.log(displayHour);
+// // Intéraction avec le DOM
+// const displayElement = document.querySelector("#display-hour");
+// // console.log(displayHour);
 
+// // Ici on affiche l'heure du navigateur 
+// function setCurrentTime() {
+//     let now = new Date();
+//     let hour = now.getHours();
+//     // console.log(hour);
+//     let min = now.getMinutes();
 // // Ici on affiche l'heure du navigateur 
 // function setCurrentTime() {
 //     let now = new Date();
@@ -11,14 +20,22 @@
 
 //     let displayHour = (hour < 10 ? "0" : "") + hour;
 //     let displayMin = (min < 10 ? "0" : "") + min;
+//     let displayHour = (hour < 10 ? "0" : "") + hour;
+//     let displayMin = (min < 10 ? "0" : "") + min;
 
+//     displayElement.innerText = `${displayHour}h${displayMin}`;
 //     displayElement.innerText = `${displayHour}h${displayMin}`;
 
 
 //     darkMode(hour);
 
+//     darkMode(hour);
+
+// };
 // };
 
+// // Gestion du dark mode
+// const darkMode = (navHour) => {
 // // Gestion du dark mode
 // const darkMode = (navHour) => {
 
@@ -34,7 +51,21 @@
 //         document.body.style.background = "white";
 //     };
 // };
+//      // Vérification si on est entre 18h et 6h du matin
+//     // Ici pour un mode automatique :
+//     if (navHour >= 18 || navHour < 6) {
+//         // Mode nuit
+//         displayElement.style.color = "white";
+//         document.body.style.background = "black";
+//     } else {
+//         // Mode jour
+//         displayElement.style.color = "black";
+//         document.body.style.background = "white";
+//     };
+// };
 
+// setCurrentTime();
+// setInterval(setCurrentTime, 2000);
 // setCurrentTime();
 // setInterval(setCurrentTime, 2000);
 
@@ -43,7 +74,12 @@
 //     try {
 //         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
 //         const data = await response.json();
+// const fetchPokemonByType = async (pkmnType) => {
+//     try {
+//         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
+//         const data = await response.json();
 
+//         const matchingPokemons = [];
 //         const matchingPokemons = [];
 
 //         for(const pokemon of data) {
