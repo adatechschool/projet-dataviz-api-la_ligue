@@ -3,7 +3,6 @@ body {
     width: 100vw;
     height: 100vh;
 
-    /* Police */
     color: var(--text-color);
     font-family: Roboto;
 
@@ -14,10 +13,8 @@ body {
     background-color: var(--menu-background);
     border-bottom: solid var(--border-color);
 
-    /* Taille */
     min-height: 10vh;
 
-    /* Positionnement */
     display: flex;
     justify-content: space-between;
 
@@ -28,43 +25,40 @@ body {
 #menu-side-left {
     /*border: solid greenyellow;*/
 
-    /* Positionnement */
-    display: flex;
-}
-
-#display-hour {
-    /*background-color: green;*/
-
-    /* Taille */
-    min-width: 10vw;
-
-    /* Positionnement */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#logo {
-    /*background-color: yellow;*/
-    /*border: solid yellow;*/
+#display-hour {
+    /*background-color: green;*/
 
-    /* Taille */
     min-width: 10vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #logo-title {
-    /*background-color: cadetblue;*/
-    /*border: solid cadetblue;*/
+    /*background-color: yellow;*/
+    /*border: solid yellow;*/
 
-    /* Taille */
     min-width: 10vw;
+    min-height: 3vh;
+    max-height: 8vh;
+
+    transition: opacity 0.5s ease-in-out;
+}
+
+.fade {
+    opacity: 0;
 }
 
 /* Containeur à droite du Menu*/
 #menu-side-right {
     /*border: solid;*/
 
-    /* Positionnement */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -76,26 +70,21 @@ body {
     /*background-color: blueviolet;*/
     border: solid var(--border-color);
 
-    /* Taille */
     min-width: 30vw;
     min-height: 4vh;
-
-    /* Positionnement */
     margin: 0 2rem 0 0.5rem;
 
-    /* Bordures */
     border-radius: 25px;
 }
 
 /* DARKMODE */
 #switch-container {
-    /* Positionnement */
     margin: 0 0.5rem 0 0.5rem;
 }
 
 /* Variables pour les couleurs des thèmes */
 :root {
-    /* Couleurs pour le thème clair */
+    --bg-image: url('images/HiPaint_1733226516152.jpg');
     --background-gradient-top: #BBACFC;
     --background-gradient-bottom: #D09147;
     --menu-background: #BBACFC;
@@ -104,10 +93,15 @@ body {
     --search-bar-border: #FFFFFF;
     --arc-astro-border: #FFFFFF;
     --form-text: #FFFFFF;
+    --primary: #4f46e5;
+    --select-border: #e5e7eb;
+    --select-text: #1f2937;
+    --select-background: #ffffff;
 }
 
 [data-theme="dark"] {
     /* Couleurs pour le thème sombre */
+    --bg-image: url('images/IMG-20241127-WA0002.jpg');
     --background-gradient-top: #2C0F39;
     --background-gradient-bottom: #BBACFC;
     --menu-background: #2C0F39;
@@ -194,17 +188,17 @@ body {
 }
 
 [data-theme="dark"] .menu {
-    background: linear-gradient(#2C0F39, 75%, #BBACFC);;
+    background: linear-gradient(#2C0F39, 75%, #BBACFC);
 }
 
 #astro-container {
-    background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));
+    background-image: var(--bg-image);
+    background-size: cover;
+    /*background: linear-gradient(var(--background-gradient-top), var(--background-gradient-bottom));*/
 
-    /* Taille */
     min-height: 70vh;
     padding: 5em 10em;
 
-    /* Positionnement */
     display: flex;
     justify-content: space-between;
 }
@@ -217,11 +211,91 @@ body {
 }
 
 #arc-astro-type {
-    /*background-color: pink;*/
-    border: solid;
+    background-color: #9692DA;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 30vw;
+}
+
+.select-types {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--select-text);
+    background-color: var(--select-background);
+    border: 2px solid var(--select-border);
+    border-radius: 8px;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.select-types:hover {
+    border-color: var(--primary);
+}
+
+.select-types:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Flèche personnalisée */
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--select-text);
+    border-bottom: 2px solid var(--select-text);
+    transform: translateY(-50%) rotate(45deg);
+    pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+.select-wrapper:hover::after {
+    border-color: var(--primary);
+}
+
+/* Animation de la flèche au focus */
+.select-types:focus + .select-wrapper::after {
+    transform: translateY(-50%) rotate(-135deg);
+}
+
+/* Style des options */
+.select-types option {
+    padding: 12px;
+    font-weight: 500;
+}
+
+#buttons-pokemon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2em 0 2em 0;
+}
+
+.pokemon {
+    margin: 0.5em 0 0.5em 0;
+    padding: 1em;
+
+    border: solid black;
+    border-radius: 30px;
+
+    background-color: #2C0F39;
 }
 
 #arc-astro-type, #arc-astro-description {
+    border-radius: 25px;
     border: solid var(--arc-astro-border);
 }
 
@@ -230,15 +304,37 @@ body {
     /*background-color: blue;*/
     color: var(--form-text);
 
-    /* Positionnement */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #arc-astro-description {
-    /*background-color: navajowhite;*/
-    border: solid;
+    background-color: #9692DA;
+    max-width: 30vw;
+
+    display: flex;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#pokemon-name {
+    display: flex;
+    justify-content: center;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#img-pokemon {
+    max-width: 25vw;
 }
 
 /* Ajout de transitions pour une animation douce */

@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script defer type="module" src="script.js"></script>
+    <script defer type="module" src="js/main.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +16,7 @@
     <div id="menu">
         <div id="menu-side-left">
             <div id="display-hour"></div>
-            <div id="logo"></div>
-            <img src="" id="logo-title">
+            <img src="images/logo-01.svg" id="logo-title">
         </div>
 
         <div id="menu-side-right">
@@ -36,17 +35,17 @@
 
     <div id="astro-container">
         <div class="arc-astro" id="arc-astro-type">
+            <h1>Choisissez votre type</h1>
             <form id="form-astro">
-                <label for="options">Types :</label>
-                <select id="options" name="options">
+                <label for="select-wrapper">Types :</label>
+                <div class="select-wrapper"></div>
+                <select class="select-types" name="options">
                     <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                    <option value="option4">Option 4</option>
                 </select>
-                <br><br>
                 <button type="submit">Valider</button>
             </form>
+
+            <div id="buttons-pokemon"></div>
         </div>
 
         <div class="arc-astro" id="arc-astro-description">
