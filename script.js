@@ -2,18 +2,18 @@ import { pokemonAstrologyThemes } from "./theme.js";
 
 // Intéraction avec le DOM
 document.addEventListener("DOMContentLoaded", () => {
-    const displayElement = document.querySelector("#display-hour");
-    const themeSwitch = document.querySelector('.theme-switch');
-    const form = document.querySelector('form');  // Ajout de la sélection du formulaire
-    const imgLogo = document.querySelector('#logo-title');
     const dropdown = document.querySelector('#options');
+    const form = document.querySelector('form');  // Ajout de la sélection du formulaire
 });
+
+const displayElement = document.querySelector("#display-hour");
+const themeSwitch = document.querySelector('.theme-switch');
+const imgLogo = document.querySelector('#logo-title');
 
 // --- Ici on affiche l'heure du navigateur ---
 function setCurrentTime() {
     let now = new Date();
     let hour = now.getHours();
-    // console.log(hour);
     let min = now.getMinutes();
 
     let displayHour = (hour < 10 ? "0" : "") + hour;
@@ -21,7 +21,6 @@ function setCurrentTime() {
 
     displayElement.innerText = `${displayHour}h${displayMin}`;
 
-    // Appelle le darkmode
     darkmodeTime(hour);
 }
 
@@ -50,7 +49,6 @@ const darkmodeTime = (navHour) => {
 
 // Fonction pour appliquer le thème
 function applyTheme(themeStatus) {
-    // console.log(themeStatus);
 
     if (themeStatus) { // Si themeStatus = true (= light) => on passe en darkmode
         document.documentElement.setAttribute('data-theme', 'dark');
@@ -181,6 +179,8 @@ const fetchPokemonByType = async (pokemonType) => {
         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
         const data = await response.json();
 
+        const matchingPokemons = [];
+
         // Récupérer les infos du pokemon dans un array [name, types, photo]
         for(const pokemon of data) {
             if (pokemon.types.find((type) => type.name.toLowerCase() === pokemonType)){// toLowerCase a virer lorsque la
@@ -196,11 +196,12 @@ const fetchPokemonByType = async (pokemonType) => {
         return matchingPokemons;
 
     } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error)
+        console.error('Erreur lors de la récupération des données:', error);
         return []
     }
 }
 
+// Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
 function shuffle(array) {
     console.log("Shuffling Pokémon array...");
     for (let i = array.length - 1; i > 0; i--) {
