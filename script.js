@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeSwitch = document.querySelector('.theme-switch');
     const form = document.querySelector('form');  // Ajout de la sélection du formulaire
     const imgLogo = document.querySelector('#logo-title');
+    const dropdown = document.querySelector('#options');
+});
 
 // --- Ici on affiche l'heure du navigateur ---
 function setCurrentTime() {
@@ -96,19 +98,83 @@ setCurrentTime();
 setInterval(setCurrentTime, 2000);
 setInterval(changeLogo, 3000);
 
-// récupérer les types
-const fetchAllTypes = async () => {
+// Ici on gère la liste déroulante
+const exPokemonTypes = async () => {
     try {
+        console.log("Fetching selected Pokémon types...");
         const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
         const data = await response.json();
+        console.log("Types fetched successfully:", data);
 
-        // Retourner seulement les noms en français
-        return data.map(type => type.name.fr);
+        const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
+        return data
+            .map(type => type.name.fr)
+            .filter(typeName => selectedTypes.includes(typeName.toLowerCase()));
     } catch (error) {
         console.error('Erreur lors de la récupération des types:', error);
         return [];
     }
-}
+};
+
+const typesDropDown = async () => {
+
+    if (!dropdown) {
+        console.error("Dropdown element not found in the DOM.");
+        return;
+    }
+
+    dropdown.innerHTML = '';
+
+    try {
+        const types = await exPokemonTypes();
+        types.forEach((type) => {
+            const option = document.createElement("option");
+            option.value = type.toLowerCase();
+            option.textContent = type;
+            dropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Erreur lors du remplissage de la liste déroulante :", error);
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "Erreur de chargement";
+        dropdown.appendChild(option);
+    }
+};
+
+typesDropDown();
+
+
+// Fonction pour valider le choix de l'utilisateur
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();  // Empêche la soumission du formulaire
+    const selectedType = document.getElementById("options").value;
+
+    if (selectedType) {
+        // console.log(`User selected: ${selectedType}`);
+        await displayRandomPkmn(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
+    } else {
+        console.log("No Pokémon type selected.");
+    }
+});
+
+// À supprimer
+// // récupérer les types
+// const fetchAllTypes = async () => {
+//     try {
+//         const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+//         const data = await response.json();
+//
+//         // Retourner seulement les noms en français
+//         return data.map(type => type.name.fr);
+//     } catch (error) {
+//         console.error('Erreur lors de la récupération des types:', error);
+//         return [];
+//     }
+// }
 
 const fetchPokemonByType = async (pokemonType) => {
     try {
@@ -119,15 +185,15 @@ const fetchPokemonByType = async (pokemonType) => {
         for(const pokemon of data) {
             if (pokemon.types.find((type) => type.name.toLowerCase() === pokemonType)){// toLowerCase a virer lorsque la
                 // liste déroulante sera intégrer.
-            matchingPokemons.push({
-                name: pokemon.name.fr,
-                types: pokemon.types.map(type => type.name),
-                photo: pokemon.sprites.regular
-            })
+                matchingPokemons.push({
+                    name: pokemon.name.fr,
+                    types: pokemon.types.map(type => type.name),
+                    photo: pokemon.sprites.regular
+                })
+            }
         }
-    }
 
-    return matchingPokemons;
+        return matchingPokemons;
 
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error)
@@ -135,75 +201,15 @@ const fetchPokemonByType = async (pokemonType) => {
     }
 }
 
-    const exPokemonTypes = async () => {
-        try {
-            console.log("Fetching selected Pokémon types...");
-            const response = await fetch('https://tyradex.vercel.app/api/v1/types');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log("Types fetched successfully:", data);
-
-            const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
-            return data
-                .map(type => type.name.fr)
-                .filter(typeName => selectedTypes.includes(typeName.toLowerCase()));
-        } catch (error) {
-            console.error('Erreur lors de la récupération des types:', error);
-            return [];
-        }
-    };
-
-    const typesDropDown = async () => {
-        const dropdown = document.getElementById("options");
-
-        if (!dropdown) {
-            console.error("Dropdown element not found in the DOM.");
-            return;
-        }
-
-        dropdown.innerHTML = '';
-
-        try {
-            const types = await exPokemonTypes();
-            types.forEach((type) => {
-                const option = document.createElement("option");
-                option.value = type.toLowerCase();
-                option.textContent = type;
-                dropdown.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Erreur lors du remplissage de la liste déroulante :", error);
-            const option = document.createElement("option");
-            option.value = "";
-            option.textContent = "Erreur de chargement";
-            dropdown.appendChild(option);
-        }
-    };
-
-    // Fonction pour valider le choix de l'utilisateur
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault();  // Empêche la soumission du formulaire
-        const selectedType = document.getElementById("options").value;
-
-        if (selectedType) {
-            console.log(`User selected: ${selectedType}`);
-            await displayRandomPkmn(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
-        } else {
-            console.log("No Pokémon type selected.");
-        }
-    });
-
-    function shuffle(array) {
-        console.log("Shuffling Pokémon array...");
-        for (let i = array.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        console.log("Array shuffled.");
-        return array;
+function shuffle(array) {
+    console.log("Shuffling Pokémon array...");
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
+    console.log("Array shuffled.");
+    return array;
+}
 
 // Afficher les pokemons dans le DOM
 const displayRandomPokemons = async (type) => {
