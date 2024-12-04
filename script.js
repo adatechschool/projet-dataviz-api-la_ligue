@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 applyTheme(true);
             }
         });
-    }
+    } 
 
     setCurrentTime();
     setInterval(setCurrentTime, 2000);
