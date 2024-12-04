@@ -209,22 +209,48 @@ const searchPokemon = async (input) => {
 
         // Filtrer les pokemons 
         const filteredPokemons = data.filter(pokemon => pokemon.name.fr.toLowerCase().includes(input));
+        console.log(filteredPokemons)
         displaySearchResults(filteredPokemons)
     } catch(error){
         console.error('Erreur lors de la recupération des données', error)
     }
 };
-searchPokemon()
-
 
 const displaySearchResults = pokemons => {
+    const description = pokemonAstrologyThemes
+    console.log('description', description)
     const resultsContainer = document.querySelector('.pokemonResults');
     resultsContainer.innerHTML = '';
 
+    // Correspondre les pokémons avec les thèmes
     pokemons.forEach(pokemon => {
+        console.log('pokemon', pokemon);
+        
+        let types = pokemon.types.map(type => type.name);
+        let themesForType = [];
+
+        console.log('types', types)
+
+        types.forEach(type => {
+            console.log(`Checking type: ${type}`)
+            if(description[type]) { 
+                let randomTheme = description[type][Math.floor(Math.random() * description[type].length)]; 
+                console.log('randomTheme', randomTheme); 
+                themesForType.push(`<p><strong>${randomTheme.theme}</strong>: ${randomTheme.description}</p>`); 
+            }
+        })
+
+        console.log('themesForType', themesForType);
+
         let div = document.createElement('div');
         div.classList.add('pokemon');
-        div.innerHTML = `<h2>${pokemon.name.fr}</h2>`;
-        resultsContainer.appendChild(div)
+        div.innerHTML = `
+        <h2>${pokemon.name.fr}</h2>
+        <p>Types: ${pokemon.types.map(type => type.name).join(', ')}</p>
+        <img src="${pokemon.sprites.regular}" alt="${pokemon.name.fr}">
+        <h3>Description: </h3>${themesForType.join('')}
+        `;
+        resultsContainer.appendChild(div);
+
     })
 }
