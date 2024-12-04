@@ -237,8 +237,9 @@ const displaySearchResults = pokemons => {
                 let randomTheme = description[type][Math.floor(Math.random() * description[type].length)]; 
                 console.log('randomTheme', randomTheme); 
                 themesForType.push(`<p><strong>${randomTheme.theme}</strong>: ${randomTheme.description}</p>`); 
-            }
-        })
+            } else {
+                themesForType.push(`<p><strong>${type}</strong> : Aucune description trouvée.</p>`);
+        }
 
         console.log('themesForType', themesForType);
 
@@ -253,4 +254,6 @@ const displaySearchResults = pokemons => {
         resultsContainer.appendChild(div);
 
     })
+})
+
 }
