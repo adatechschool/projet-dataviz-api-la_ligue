@@ -5,7 +5,8 @@ const displayElement = document.querySelector("#display-hour");
 const themeSwitch = document.querySelector('.theme-switch');
 const form = document.querySelector('form');  // Ajout de la sélection du formulaire
 const imgLogo = document.querySelector('#logo-title');
-const dropdown = document.querySelector('#options');
+const searchTerm = document.getElementById('search');
+const dropdown = document.querySelector('.select-types');
 
 
 // --- Ici on affiche l'heure du navigateur ---
@@ -158,6 +159,28 @@ form.addEventListener("submit", async (event) => {
     }
 });
 
+// Fonction pour gérer l'affichage en fonction de la méthode de sélection 
+const updateDisplayBySelectionMethod = async (event) => { 
+    const searchValue = searchTerm.value.trim(); 
+    const dropdownValue = dropdown.value; 
+
+    if (searchValue !== '' && event.target.id === 'search') { 
+        fetchPokemonByType(searchValue); 
+        dropdown.value = ''; // Réinitialiser la liste déroulante
+        document.querySelector('.pokemonResults').style.display = 'block';
+        document.querySelector('.description').style.display = 'none'
+    } else if (dropdownValue !== '' && event.target.id === 'dropdown') { 
+        fetchPokemonByType(dropdownValue)
+        searchTerm.value = ''; // Réinitialiser la barre de recherche 
+        document.querySelector('.description').style.display = 'block';
+        document.querySelector('.pokemonResults').style.display = 'none'
+    } 
+}; 
+
+// Liaison des événements de la barre de recherche et de la liste déroulante 
+searchTerm.addEventListener('input', updateDisplayBySelectionMethod); 
+dropdown.addEventListener('change', updateDisplayBySelectionMethod);
+
 // À supprimer
 // // récupérer les types
 // const fetchAllTypes = async () => {
@@ -284,7 +307,7 @@ const displayDetailsOfOnePokemon = (data, description) => {
 //displayRandomPokemons ('feu');
 
 // searchbar
-const searchTerm = document.getElementById('search');
+//const searchTerm = document.getElementById('search');
 
 // Rechercher des pokemons dans la searchbar
 document.getElementById('searchButton').addEventListener('click', () =>{
