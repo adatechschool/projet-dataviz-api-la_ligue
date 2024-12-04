@@ -261,6 +261,21 @@ body {
     transition: transform 0.2s ease;
 }
 
+.select-wrapper:hover::after {
+    border-color: var(--primary);
+}
+
+/* Animation de la flèche au focus */
+.select-types:focus + .select-wrapper::after {
+    transform: translateY(-50%) rotate(-135deg);
+}
+
+/* Style des options */
+.select-types option {
+    padding: 12px;
+    font-weight: 500;
+}
+
 #buttons-pokemon {
     display: flex;
     flex-direction: column;
