@@ -1,9 +1,11 @@
-import { pokemonAstrologyThemes } from "./js/theme.js";
+import { pokemonAstrologyThemes } from "./theme.js";
 
 // Intéraction avec le DOM
-const displayElement = document.querySelector("#display-hour");
-const themeSwitch = document.querySelector('.theme-switch');
-const imgLogo = document.querySelector('#logo-title');
+document.addEventListener("DOMContentLoaded", () => {
+    const displayElement = document.querySelector("#display-hour");
+    const themeSwitch = document.querySelector('.theme-switch');
+    const form = document.querySelector('form');  // Ajout de la sélection du formulaire
+    const imgLogo = document.querySelector('#logo-title');
 
 // --- Ici on affiche l'heure du navigateur ---
 function setCurrentTime() {
@@ -113,8 +115,6 @@ const fetchPokemonByType = async (pokemonType) => {
         const response = await fetch('https://tyradex.vercel.app/api/v1/gen/1')
         const data = await response.json();
 
-        const matchingPokemons = [];
-
         // Récupérer les infos du pokemon dans un array [name, types, photo]
         for(const pokemon of data) {
             if (pokemon.types.find((type) => type.name.toLowerCase() === pokemonType)){// toLowerCase a virer lorsque la
@@ -135,17 +135,75 @@ const fetchPokemonByType = async (pokemonType) => {
     }
 }
 
-// Fonction pour mélanger le tableau (algorithme de Fisher-Yates)
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
+    const exPokemonTypes = async () => {
+        try {
+            console.log("Fetching selected Pokémon types...");
+            const response = await fetch('https://tyradex.vercel.app/api/v1/types');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log("Types fetched successfully:", data);
 
-        // Échanger les éléments array[i] et array[j]
-        [array[i], array[j]] = [array[j], array[i]];
+            const selectedTypes = ['eau', 'plante', 'feu', 'spectre'];
+            return data
+                .map(type => type.name.fr)
+                .filter(typeName => selectedTypes.includes(typeName.toLowerCase()));
+        } catch (error) {
+            console.error('Erreur lors de la récupération des types:', error);
+            return [];
+        }
+    };
+
+    const typesDropDown = async () => {
+        const dropdown = document.getElementById("options");
+
+        if (!dropdown) {
+            console.error("Dropdown element not found in the DOM.");
+            return;
+        }
+
+        dropdown.innerHTML = '';
+
+        try {
+            const types = await exPokemonTypes();
+            types.forEach((type) => {
+                const option = document.createElement("option");
+                option.value = type.toLowerCase();
+                option.textContent = type;
+                dropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Erreur lors du remplissage de la liste déroulante :", error);
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Erreur de chargement";
+            dropdown.appendChild(option);
+        }
+    };
+
+    // Fonction pour valider le choix de l'utilisateur
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();  // Empêche la soumission du formulaire
+        const selectedType = document.getElementById("options").value;
+
+        if (selectedType) {
+            console.log(`User selected: ${selectedType}`);
+            await displayRandomPkmn(selectedType);  // Afficher un Pokémon au hasard du type sélectionné
+        } else {
+            console.log("No Pokémon type selected.");
+        }
+    });
+
+    function shuffle(array) {
+        console.log("Shuffling Pokémon array...");
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        console.log("Array shuffled.");
+        return array;
     }
-
-    return array;
-}
 
 // Afficher les pokemons dans le DOM
 const displayRandomPokemons = async (type) => {
