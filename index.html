@@ -21,7 +21,7 @@
 
         <div id="menu-side-right">
             <input type="text" id="search-bar" placeholder="Rechercher un Pokémon...">
-            <button id="search-button">Rechercher</button>
+            <button id="search-button" class="submit-button">Rechercher</button>
             <button class="theme-switch" aria-label="Changer le thème">
                 <div class="switch-handle">
                     <div class="sun"></div>
@@ -36,10 +36,9 @@
         <div class="arc-astro" id="arc-astro-type">
             <h1>Choisissez votre type</h1>
             <form id="form-astro">
-                <label for="select-wrapper">Types :</label>
-                <div class="select-wrapper"></div>
+                <label for="select-types" id="label-types">Types:</label>
                 <select class="select-types" id="options" name="options"></select>
-                <button type="submit">Valider</button>
+                <button type="submit" id="submit-type" class="submit-button">Valider</button>
             </form>
 
             <div id="buttons-pokemon"></div>

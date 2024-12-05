@@ -72,7 +72,7 @@ body {
 
     min-width: 30vw;
     min-height: 4vh;
-    margin: 0 2rem 0 0.5rem;
+    margin: 0 0.5rem 0 0.5rem;
 
     border-radius: 25px;
 }
@@ -80,10 +80,6 @@ body {
 /* DARKMODE */
 #switch-container {
     margin: 0 0.5rem 0 0.5rem;
-}
-
-#search-button {
-
 }
 
 /* Variables pour les couleurs des thèmes */
@@ -101,6 +97,8 @@ body {
     --select-border: #e5e7eb;
     --select-text: #1f2937;
     --select-background: #ffffff;
+    --primary-hover: #4338ca;
+    --primary-active: #3730a3;
 }
 
 [data-theme="dark"] {
@@ -249,22 +247,6 @@ body {
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-/* Flèche personnalisée */
-.select-wrapper::after {
-    content: '';
-    position: absolute;
-    left: 448px;
-    /*!*top: 50%;*! Position sur l'écran*/
-    transform: translateY(-50%);
-    width: 10px;
-    height: 10px;
-    border-right: 2px solid var(--select-text);
-    border-bottom: 2px solid var(--select-text);
-    transform: translateY(-50%) rotate(45deg);
-    pointer-events: none;
-    transition: transform 0.2s ease;
-}
-
 .select-wrapper:hover::after {
     border-color: var(--primary);
 }
@@ -344,4 +326,41 @@ body {
 /* Ajout de transitions pour une animation douce */
 #menu, body, #search-bar {
     transition: all 0.3s ease;
+}
+
+/* Style du bouton */
+.submit-button {
+    padding: 12px 24px;
+    margin: 0 0.5rem 0 0.5rem;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    background-color: var(--primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* États du bouton */
+.submit-button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:active {
+    background-color: var(--primary-active);
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+}
+
+#label-types {
+    margin: 0 0.5rem 0 0.5rem;
 }
