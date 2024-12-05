@@ -13,7 +13,6 @@ const themeSwitch = document.querySelector('.theme-switch');
 const imgLogo = document.querySelector('#logo-title');
 const searchTerm = document.getElementById('search-button');
 
-
 // Initialisation des services
 const setCurrentTime = initTimeDisplay(displayElement);
 const { darkmodeTime } = initThemeManager(themeSwitch);
