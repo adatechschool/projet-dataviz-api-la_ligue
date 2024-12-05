@@ -11,7 +11,7 @@ import { pokemonAstrologyThemes } from './theme.js';
 const displayElement = document.querySelector("#display-hour");
 const themeSwitch = document.querySelector('.theme-switch');
 const imgLogo = document.querySelector('#logo-title');
-const searchTerm = document.getElementById('search');
+const searchTerm = document.getElementById('search-button');
 
 
 // Initialisation des services
